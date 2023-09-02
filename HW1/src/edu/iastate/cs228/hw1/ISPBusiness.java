@@ -21,6 +21,11 @@ public class ISPBusiness {
 	public static Town updatePlain(Town tOld) {
 		Town tNew = new Town(tOld.getLength(), tOld.getWidth());
 		//TODO: Write your code here.
+		for(int r = 0; r < tOld.getLength(); r++) {
+			for(int c = 0; c < tOld.getWidth(); c++) {
+				tNew.grid[r][c] = tOld.grid[r][c].next(tNew);
+			}
+		}
 		return tNew;
 	}
 	
@@ -33,7 +38,7 @@ public class ISPBusiness {
 		//TODO: Write/update your code here.
 		return town.sumProfit();
 	}
-	public static int maxPofit(Town town) {
+	public static int maxProfit(Town town) {
 		return town.getArea();
 	}
 
@@ -41,7 +46,7 @@ public class ISPBusiness {
 
 	public static void simulate(Scanner input, Town town) {
 
-		System.out.println("Please select generation method:\n\t1. From file\n\t2. Randomly seeded\n");
+		System.out.print("Please select grid generation method:\n\t1. From file\n\t2. Randomly seeded\n--> ");
 
 		final int sel = input.nextInt();
 		if(input.hasNextLine()) { input.nextLine(); }
@@ -56,7 +61,7 @@ public class ISPBusiness {
 				return;
 			}
 		} else if(sel == 2) {
-			System.out.println("Enter the # of rows, # of columns, and a seed:\n--> ");
+			System.out.print("Enter the # of rows, # of columns, and a seed:\n--> ");
 			final int
 				r = input.nextInt(),
 				c = input.nextInt(),
@@ -69,12 +74,16 @@ public class ISPBusiness {
 
 		// iterate the grid, calc the profit.
 		int max = 0, sum = 0;
+		Town previous = town;
+		System.out.println("\n+------ Simulating ------>");
 		for(int m = 0; m < 12; m++) {
-			//...
-			max += town.getArea();
-			sum += town.sumProfit();
+			System.out.println("Before billing period #" + (m + 1) + ":");
+			System.out.println(previous);
+			max += ISPBusiness.maxProfit(previous);
+			previous = ISPBusiness.updatePlain(previous);
+			sum += ISPBusiness.getProfit(previous);
 		}
-		double utilization = (double)sum / max;
+		double utilization = (double)sum / max * 100.0;
 		System.out.println(String.format("%,.2f%%", utilization));
 
 	}
@@ -108,7 +117,7 @@ public class ISPBusiness {
 		for(;;) {
 			// clear scanner?
 			simulate(s, town);
-			System.out.println("\nEnter 1 to restart, otherwise the program will exit:\n--> ");
+			System.out.print("\nEnter 1 to restart, otherwise press any key to exit:\n--> ");
 			if(s.nextInt() != 1) {
 				break;
 			}

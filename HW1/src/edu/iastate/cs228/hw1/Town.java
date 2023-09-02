@@ -2,6 +2,7 @@ package edu.iastate.cs228.hw1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
 // import java.lang.Runnable;
@@ -13,9 +14,6 @@ import java.util.Scanner;
  */
 public class Town {
 
-	private static final char[]
-		ID_ARRAY = new char[]{ 'C', 'S', 'R', 'E', 'O' };
-
 	private int length, width;  //Row and col (first and second indices)
 	public TownCell[][] grid;
 
@@ -25,7 +23,7 @@ public class Town {
 	}
 	private static void iterateCells(TownCell[][] grid, CellOperation op) {
 		for(int i = 0; i < grid.length; i++) {
-			for(int j = 0; i < grid[i].length; j++) {
+			for(int j = 0; j < grid[i].length; j++) {
 				op.apply(grid[i][j], i, j);
 			}
 		}
@@ -40,11 +38,11 @@ public class Town {
 	/** Create a new TownCell descendant type based on the character encoding */
 	private TownCell makeCellType(char id, int r, int c) {
 		switch(id) {
-			case 'C': return new TownCell.Casual(this.grid, r, c);
-			case 'S': return new TownCell.Streamer(this.grid, r, c);
-			case 'R': return new TownCell.Reseller(this.grid, r, c);
-			case 'E': return new TownCell.Empty(this.grid, r, c);
-			case 'O': return new TownCell.Outage(this.grid, r, c);
+			case 'C': return new TownCell.Casual(this, r, c);
+			case 'S': return new TownCell.Streamer(this, r, c);
+			case 'R': return new TownCell.Reseller(this, r, c);
+			case 'E': return new TownCell.Empty(this, r, c);
+			case 'O': return new TownCell.Outage(this, r, c);
 			default: return null;
 		}
 	}
@@ -64,6 +62,32 @@ public class Town {
 			}
 		}
 		s.close();
+	}
+
+	public static int[] pollNeighborhood(Town town, int r, int c, int[] type_count)
+		{ return pollNeighborhood(town.grid, r, c, type_count); }
+	public static int[] pollNeighborhood(TownCell[][] grid, int r, int c, int[] type_count) {
+		Objects.requireNonNull(grid, "TownCell[][] grid cannot be null!");
+		if(type_count == null || type_count.length < TownCell.NUM_CELL_TYPE) {
+			type_count = new int[5];
+		} else {
+			for(int i = 0; i < TownCell.NUM_CELL_TYPE; i++) {
+				type_count[i] = 0;
+			}
+		}
+		final int
+			ly = Math.max(0, r - 1),
+			hy = Math.min(grid.length - 1, r + 1),
+			lx = Math.max(0, c - 1),
+			hx = Math.min(grid[0].length - 1, c + 1);
+		for(int _r = ly; _r <= hy; _r++) {
+			for(int _c = lx; _c <= hx; _c++) {
+				if(_r != r || _c != c) { 
+					type_count[grid[_r][_c].typeIndex()] += 1;
+				}
+			}
+		}
+		return type_count;
 	}
 
 
@@ -106,6 +130,7 @@ public class Town {
 		this.restart(inputFileName);
 	}
 
+
 	/**
 	 * Regenerate the grid given the specified size and initialize each cell randomly from a seed.
 	 * @param l
@@ -137,7 +162,6 @@ public class Town {
 		//TODO: Write/update your code here.
 		return this.width;
 	}
-	
 	/**
 	 * Returns length of the grid.
 	 * @return
@@ -163,7 +187,7 @@ public class Town {
 		final Random rand = new Random(seed);
 		//TODO: Write your code here.
 		iterateCells(this.grid, (TownCell cell, int r, int c)->{
-			this.grid[r][c] = this.makeCellType( ID_ARRAY[rand.nextInt(5)], r, c );
+			this.grid[r][c] = this.makeCellType( CellType.idxToValue( rand.nextInt(5) ), r, c );
 		});
 	}
 	/**
@@ -190,6 +214,12 @@ public class Town {
 	public String toString() {
 		String s = "";
 		//TODO: Write your code here.
+		for(int r = 0; r < this.length; r++) {
+			for(int c = 0; c < this.width; c++) {
+				s += this.grid[r][c].charValue() + " ";
+			}
+			s += "\n";
+		}
 		return s;
 	}
 }
