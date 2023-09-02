@@ -29,9 +29,54 @@ public class ISPBusiness {
 	 * @param town
 	 * @return
 	 */
-	public static int getProfit(Town town) {
+	public static int getProfit(Town town) {	// this should really be a Town member function
 		//TODO: Write/update your code here.
-		return 0;
+		return town.sumProfit();
+	}
+	public static int maxPofit(Town town) {
+		return town.getArea();
+	}
+
+
+
+	public static void simulate(Scanner input, Town town) {
+
+		System.out.println("Please select generation method:\n\t1. From file\n\t2. Randomly seeded\n");
+
+		final int sel = input.nextInt();
+		if(input.hasNextLine()) { input.nextLine(); }
+
+		if(sel == 1) {
+			System.out.print("Enter the path to file:\n--> ");
+			final String f = input.nextLine();
+			try {
+				town = (town == null) ? new Town(f) : town.restart(f);
+			} catch(FileNotFoundException e) {
+				System.out.println("Error opening file path: " + e.getMessage());
+				return;
+			}
+		} else if(sel == 2) {
+			System.out.println("Enter the # of rows, # of columns, and a seed:\n--> ");
+			final int
+				r = input.nextInt(),
+				c = input.nextInt(),
+				x = input.nextInt();
+			town = (town == null) ? new Town(r, c, x) : town.restart(r, c, x);
+		} else {
+			System.out.println("Invalid Option.");
+			return;
+		}
+
+		// iterate the grid, calc the profit.
+		int max = 0, sum = 0;
+		for(int m = 0; m < 12; m++) {
+			//...
+			max += town.getArea();
+			sum += town.sumProfit();
+		}
+		double utilization = (double)sum / max;
+		System.out.println(String.format("%,.2f%%", utilization));
+
 	}
 	
 
@@ -57,6 +102,22 @@ public class ISPBusiness {
 	 */
 	public static void main(String []args) {
 		//TODO: Write your code here.
+		final Scanner s = new Scanner(System.in);
+		Town town = null;
+		
+		for(;;) {
+			// clear scanner?
+			simulate(s, town);
+			System.out.println("\nEnter 1 to restart, otherwise the program will exit:\n--> ");
+			if(s.nextInt() != 1) {
+				break;
+			}
+			System.out.println("\n");
+		}
+		
+		s.close();
 
 	}
+
+
 }

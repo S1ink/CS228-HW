@@ -66,4 +66,111 @@ public abstract class TownCell {
 	 * @return TownCell
 	 */
 	public abstract TownCell next(Town tNew);
+
+	public int profit() {
+		return this.who() == State.CASUAL ? 1 : 0;
+	}
+	public abstract char getCharID();
+	public abstract int getIDX();
+
+
+
+
+
+
+
+
+
+
+
+
+	/** >> TOWNCELL IMPLEMENTATIONS >> */
+
+	public static class Casual extends TownCell {
+
+		public Casual(Town p, int r, int c) {
+			super(p, r, c);
+		}
+
+		@Override
+		public State who() {
+			return State.CASUAL;
+		}
+		@Override
+		public TownCell next(Town tNew) {
+
+		}
+
+
+	}
+	public static class Streamer extends TownCell {
+
+		public Streamer(Town p, int r, int c) {
+			super(p, r, c);
+		}
+
+		@Override
+		public State who() {
+			return State.STREAMER;
+		}
+		@Override
+		public TownCell next(Town tNew) {
+
+		}
+
+
+	}
+	public static class Reseller extends TownCell {
+
+		public Reseller(Town p, int r, int c) {
+			super(p, r, c);
+		}
+
+		@Override
+		public State who() {
+			return State.RESELLER;
+		}
+		@Override
+		public TownCell next(Town tNew) {
+
+		}
+
+
+	}
+	public static class Empty extends TownCell {
+
+		public Empty(Town p, int r, int c) {
+			super(p, r, c);
+		}
+
+		@Override
+		public State who() {
+			return State.EMPTY;
+		}
+		@Override
+		public TownCell next(Town tNew) {
+
+		}
+
+
+	}
+	public static class Outage extends TownCell {
+
+		public Outage(Town p, int r, int c) {
+			super(p, r, c);
+		}
+
+		@Override
+		public State who() {
+			return State.OUTAGE;
+		}
+		@Override
+		public TownCell next(Town tNew) {
+
+		}
+
+
+	}
+
+
 }
