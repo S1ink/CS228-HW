@@ -2,16 +2,16 @@ package edu.iastate.cs228.hw1;
 
 
 /**
+ * @author Sam Richter
  * 
- * @author <<Write your name here>>
- *	Also provide appropriate comments for this class
- *
+ * The TownCell abstract class defines all base behavior necessary for
+ * simulation of the Town grid.
  */
 public abstract class TownCell {
 
 	protected Town plain;
-	protected int rows;
-	protected int cols;
+	protected int row;
+	protected int col;
 	
 	
 	// constants to be used as indices.
@@ -26,10 +26,11 @@ public abstract class TownCell {
 	//Use this static array to take census.
 	public static final int[] nCensus = new int[NUM_CELL_TYPE];
 
+	/** Create a TownCell in the plain p, at location (r, c) */
 	public TownCell(Town p, int r, int c) {
 		plain = p;
-		rows = r;
-		cols = c;
+		row = r;
+		col = c;
 	}
 	
 	/**
@@ -41,32 +42,30 @@ public abstract class TownCell {
 	 * @param nCensus counts of all customers
 	 */
 	public void census(int nCensus[]) {
-		// zero the counts of all customers
-		// nCensus[RESELLER] = 0; 
-		// nCensus[EMPTY] = 0; 
-		// nCensus[CASUAL] = 0; 
-		// nCensus[OUTAGE] = 0; 
-		// nCensus[STREAMER] = 0; 
-
-		//TODO: Write your code here.
-		Town.pollNeighborhood(this.plain, this.rows, this.cols, nCensus);
-
+		Town.pollNeighborhood(this.plain, this.row, this.col, nCensus);
 	}
 
 	/**
-	 * Get the profit of the cell.
+	 * Find the profit of the cell. By default this is dependant on
+	 * the CellType enum but can be overloaded if necessary.
+	 * 
+	 * @return the profit in dollars
 	 */
 	public int profit() {
 		return this.type().getProfit();
 	}
 	/** 
-	 * Get the single char representation of the cell's type.
+	 * Get the char representation of the cell type.
+	 * 
+	 * @return the char representation
 	*/
 	public char charValue() {
 		return this.type().getCharValue();
 	}
 	/** 
-	 * Get the cell type's index.
+	 * Get the index corresponding to the cell's type.
+	 * 
+	 * @return the integer index corresponding to the cell's type
 	*/
 	public int typeIndex() {
 		return this.type().getIdx();
@@ -94,190 +93,6 @@ public abstract class TownCell {
 	 * @return TownCell
 	 */
 	public abstract TownCell next(Town tNew);
-
-
-
-
-
-
-
-
-
-
-
-
-	private static boolean altRuleA_Reseller(int[] census) {
-		return (CellType.Empty.getCount(census) + CellType.Outage.getCount(census) <= 1);
-	}
-	private static boolean altRuleB_Streamer(int[] census) {
-		return (CellType.Casual.getCount(census) >= 5);
-	}
-
-
-
-	/** >> TOWNCELL IMPLEMENTATIONS >> */
-
-	public static final class Casual extends TownCell {
-
-		public Casual(Town p, int r, int c) {
-			super(p, r, c);
-		}
-		public Casual(TownCell t) {
-			this(t.plain, t.rows, t.cols);
-		}
-
-		@Override
-		public CellType type() {
-			return CellType.Casual;
-		}
-		@Override
-		public State who() {
-			return this.type().getAlt();
-		}
-		@Override
-		public TownCell next(Town tNew) {
-			this.census(TownCell.nCensus);
-			this.plain = tNew;
-			if(altRuleA_Reseller(nCensus)) {
-				return new Reseller(this);
-			} else if(CellType.Reseller.getCount(nCensus) >= 1) {
-				return new Outage(this);
-			} else if(CellType.Streamer.getCount(nCensus) >= 1) {
-				return new Streamer(this);
-			} else if(altRuleB_Streamer(nCensus)) {
-				return new Streamer(this);
-			} else {
-				return this;
-			}
-		}
-
-
-	}
-	public static final class Streamer extends TownCell {
-
-		public Streamer(Town p, int r, int c) {
-			super(p, r, c);
-		}
-		public Streamer(TownCell t) {
-			this(t.plain, t.rows, t.cols);
-		}
-
-		@Override
-		public CellType type() {
-			return CellType.Streamer;
-		}
-		@Override
-		public State who() {
-			return this.type().getAlt();
-		}
-		@Override
-		public TownCell next(Town tNew) {
-			this.census(TownCell.nCensus);
-			this.plain = tNew;
-			if(altRuleA_Reseller(nCensus)) {
-				return new Reseller(this);
-			} else if(CellType.Reseller.getCount(nCensus) >= 1) {
-				return new Outage(this);
-			} else if(CellType.Outage.getCount(nCensus) >= 1) {
-				return new Empty(this);
-			}  else if(altRuleB_Streamer(nCensus)) {
-				return new Streamer(this);
-			} else {
-				return this;
-			}
-		}
-
-
-	}
-	public static final class Reseller extends TownCell {
-
-		public Reseller(Town p, int r, int c) {
-			super(p, r, c);
-		}
-		public Reseller(TownCell t) {
-			this(t.plain, t.rows, t.cols);
-		}
-
-		@Override
-		public CellType type() {
-			return CellType.Reseller;
-		}
-		@Override
-		public State who() {
-			return this.type().getAlt();
-		}
-		@Override
-		public TownCell next(Town tNew) {
-			this.census(TownCell.nCensus);
-			this.plain = tNew;
-			if(CellType.Casual.getCount(nCensus) <= 3) {
-				return new Empty(this);
-			} else if(CellType.Empty.getCount(nCensus) >= 3) {
-				return new Empty(this);
-			} else if(altRuleB_Streamer(nCensus)) {
-				return new Streamer(this);
-			} else {
-				return this;
-			}
-		}
-
-
-	}
-	public static final class Outage extends TownCell {
-
-		public Outage(Town p, int r, int c) {
-			super(p, r, c);
-		}
-		public Outage(TownCell t) {
-			this(t.plain, t.rows, t.cols);
-		}
-
-		@Override
-		public CellType type() {
-			return CellType.Outage;
-		}
-		@Override
-		public State who() {
-			return this.type().getAlt();
-		}
-		@Override
-		public TownCell next(Town tNew) {
-			this.plain = tNew;
-			return new Empty(this);
-		}
-
-
-	}
-	public static final class Empty extends TownCell {
-
-		public Empty(Town p, int r, int c) {
-			super(p, r, c);
-		}
-		public Empty(TownCell t) {
-			this(t.plain, t.rows, t.cols);
-		}
-
-		@Override
-		public CellType type() {
-			return CellType.Empty;
-		}
-		@Override
-		public State who() {
-			return this.type().getAlt();
-		}
-		@Override
-		public TownCell next(Town tNew) {
-			this.census(nCensus);
-			this.plain = tNew;
-			if(altRuleA_Reseller(nCensus)) {
-				return new Reseller(this);
-			} else {
-				return new Casual(this);
-			}
-		}
-
-
-	}
 
 
 }
