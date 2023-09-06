@@ -171,8 +171,11 @@ public class Town {
 
 
 
+
+	/** << PRIVATE / PUBLIC-STATIC HELPERS >> */
+
 	/**
-	 * Reallocate this town's grid to be of size [l * w]
+	 * Reallocate this town's grid to be of size [l, w]
 	 * 
 	 * @param l the number of rows in the grid
 	 * @param w the number of columns in the grid
@@ -293,23 +296,6 @@ public class Town {
 		}
 		// return the census array
 		return type_count;
-	}
-
-	/** 
-	 * Test if alternate rule A applies given a neighborhood census.
-	 * 
-	 * @return whether or not alternate rule A applies to the given neighborhood census
-	 */
-	public static boolean altRuleA_Reseller(int[] census) {
-		return (CellType.Empty.getCount(census) + CellType.Outage.getCount(census) <= 1);
-	}
-	/**
-	 * Test if alternate rule B applies given a neighborhood census.
-	 * 
-	 * @return whether or not alternate rule B applies to the given neighborhood census
-	 */
-	public static boolean altRuleB_Streamer(int[] census) {
-		return (CellType.Casual.getCount(census) >= 5);
 	}
 
 

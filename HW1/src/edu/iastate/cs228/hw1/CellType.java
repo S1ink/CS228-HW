@@ -4,17 +4,17 @@ package edu.iastate.cs228.hw1;
 /**
  * @author Sam Richter
  * 
- * CellType 'wraps' the more basic {@link State} enum with additional
- * linked properties and functionality for converting between cell type representations,
- * as well as reordering the types to be more intuitive.
+ * CellType 'wraps' the more basic {@link State} enum with additional linked properties
+ * and functionality for converting between cell type representations.
+ * This file also acts a container for static helpers dealing with type properties, rules, and conversion.
  */
 public enum CellType {
 
-	Casual		(State.CASUAL,		'C', 0, 1),
-	Streamer	(State.STREAMER,	'S', 1, 0),
-	Reseller	(State.RESELLER,	'R', 2, 0),
-	Outage		(State.OUTAGE,		'O', 3, 0),
-	Empty		(State.EMPTY,		'E', 4, 0);
+	Reseller	(State.RESELLER,	'R', TownCell.RESELLER,	0),
+	Empty		(State.EMPTY,		'E', TownCell.EMPTY,	0),
+	Casual		(State.CASUAL,		'C', TownCell.CASUAL,	1),
+	Outage		(State.OUTAGE,		'O', TownCell.OUTAGE,	0),
+	Streamer	(State.STREAMER,	'S', TownCell.STREAMER,	0);
 
 
 	private final State alt;
@@ -73,6 +73,8 @@ public enum CellType {
 	/**
 	 * Attempt to convert an integer index to the corresponding CellType representation of the type.
 	 * 
+	 * @param idx the index to convert to a CellType
+	 * 
 	 * @return the corresponding CellType value, or null if the index is not valid (ie. not in the range [0, # of types])
 	 */
 	public static CellType fromIdx(int idx) {
@@ -83,6 +85,8 @@ public enum CellType {
 	/**
 	 * Attempt to convert an integer index to the corresponding char representation of the type.
 	 * 
+	 * @param idx the index to get the char representation of
+	 * 
 	 * @return the corresponding char value, or a null termination character if the index is not valid
 	 */
 	public static char idxToChar(int idx) {
@@ -90,6 +94,27 @@ public enum CellType {
 		CellType t = fromIdx(idx);
 		// extract the char if the index was valid, else return null termination char
 		return t != null ? t.getCharValue() : '\0';
+	}
+
+
+
+	/** 
+	 * Test if alternate rule A applies given a neighborhood census.
+	 * 
+	 * @return whether or not alternate rule A applies to the given neighborhood census
+	 */
+	public static boolean altRuleA_Reseller(int[] census) {
+		// "Any cell that (1) is not a Reseller or Outage and (2) and has (Number of Empty + Number of Outage neighbors less than or equal to 1) converts to Reseller"
+		return (CellType.Empty.getCount(census) + CellType.Outage.getCount(census) <= 1);
+	}
+	/**
+	 * Test if alternate rule B applies given a neighborhood census.
+	 * 
+	 * @return whether or not alternate rule B applies to the given neighborhood census
+	 */
+	public static boolean altRuleB_Streamer(int[] census) {
+		// "If none of the above rules apply, any cell with 5 or more casual neighbors becomes a Streamer."
+		return (CellType.Casual.getCount(census) >= 5);
 	}
 
 

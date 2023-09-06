@@ -141,11 +141,11 @@ public class ISPBusiness {
 		final Scanner s = new Scanner(System.in);
 		Town town = null;
 		
-		if(RUN_DEBUG) {
+		if(RUN_VERBOSE) {
 			for(;;) {
 				simulate(s, town, true);
 				System.out.print("\nEnter 1 to restart, otherwise enter any number to exit:\n--> ");
-				if(s.nextInt() != '1') {
+				if(s.nextInt() != 1) {
 					break;
 				}
 				System.out.println("\n");
@@ -158,7 +158,7 @@ public class ISPBusiness {
 
 	}
 	
-	private static final boolean RUN_DEBUG = false;
+	private static final boolean RUN_VERBOSE = false;
 
 
 }
