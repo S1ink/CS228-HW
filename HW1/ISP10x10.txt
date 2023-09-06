@@ -1,0 +1,11 @@
+10 10
+E S R S R S O S R S
+R C O E R C E O C S
+C S O E O S S R E E
+O O S E R C O E E S
+R R O C O R C S E C
+C R S R S C O R E C
+S R E S C R R R S C
+S C C R S E R E E O
+E S C E C E O E R O
+E O C C E E R S R R

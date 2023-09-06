@@ -139,7 +139,7 @@ public class Town {
 		// loop over each cell and add it's profit to the total
 		for(TownCell[] ta : this.grid) {
 			for(TownCell t : ta) {
-				profit += t.profit();
+				profit += (t != null ? t.profit() : 0);
 			}
 		}
 		return profit;
@@ -159,8 +159,9 @@ public class Town {
 		// loop over each cell in the grid
 		for(int r = 0; r < this.length; r++) {
 			for(int c = 0; c < this.width; c++) {
-				// get the char value and append
-				s += this.grid[r][c].charValue() + " ";
+				TownCell t = this.grid[r][c];
+				// check for null, append char representation or 'n' if null
+				s += (t != null ? t.charValue() : 'n') + " ";
 			}
 			// add a newline after each row
 			s += "\n";
@@ -224,8 +225,8 @@ public class Town {
 		if(s.hasNextLine()) { s.nextLine(); }
 		// loop through each line based on the previously read row count of the grid
 		for(int i = 0; i < this.length; i++) {
-			// extract the line, get rid of all whitespace
-			final String line = s.nextLine().replaceAll("\\s", "");
+			// extract the line, get rid of all whitespace, ensure upper case letters
+			final String line = s.nextLine().replaceAll("\\s", "").toUpperCase();
 			// loop through each cell in the row based on the previously read column count of the grid
 			for(int j = 0; j < this.width; j++) {
 				// extract the char for each cell
@@ -252,6 +253,7 @@ public class Town {
 	 * @param type_count the array to which the census results will be copied
 	 * 
 	 * @return the census results array - if type_count was not the correct size, then this will be a newly allocated array of the correct length
+	 * @throws NullPointerException if the Town was null
 	 */
 	public static int[] pollNeighborhood(Town town, int r, int c, int[] type_count)
 		{ return pollNeighborhood(town.grid, r, c, type_count); }
@@ -265,6 +267,7 @@ public class Town {
 	 * @param type_count the array to which the census results will be copied
 	 * 
 	 * @return the census results array - if type_count was not the correct size, then this will be a newly allocated array of the correct length
+	 * @throws NullPointerException if the grid is null
 	 */
 	public static int[] pollNeighborhood(TownCell[][] grid, int r, int c, int[] type_count) {
 		// we cannot do anything if the grid is null
@@ -278,7 +281,7 @@ public class Town {
 				type_count[i] = 0;
 			}
 		}
-		// find the minimum and maximum bounds for the neighborhood seach area
+		// find the minimum and maximum bounds for the neighborhood search area
 		final int
 			ly = Math.max(0, r - 1),
 			hy = Math.min(grid.length - 1, r + 1),
@@ -290,7 +293,10 @@ public class Town {
 				// if the cell is not the 'center' cell
 				if(_r != r || _c != c) {
 					// get the type of the cell and update the count of that type
-					type_count[grid[_r][_c].typeIndex()] += 1;
+					TownCell t = grid[_r][_c];
+					if(t != null) {
+						type_count[t.typeIndex()] += 1;
+					}
 				}
 			}
 		}

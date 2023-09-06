@@ -96,7 +96,7 @@ public class ISPBusiness {
 
 		int max = 0, sum = 0;
 		Town previous = town;
-		if(debug) { System.out.println("\n+------ Simulating ------>"); }
+		if(debug) { System.out.println("\n+------ Simulating ------>\n"); }
 		// iterate the grid over 12 months and keep track of the profit and max potential profit
 		for(int m = 0; m < 12; m++) {
 			if(debug) { System.out.println("Before billing period #" + (m + 1) + ":\n" + previous); }
@@ -158,7 +158,7 @@ public class ISPBusiness {
 
 	}
 	
-	private static final boolean RUN_VERBOSE = false;
+	private static final boolean RUN_VERBOSE = true;
 
 
 }
