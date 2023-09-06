@@ -8,8 +8,36 @@ import org.junit.jupiter.api.Test;
 class TownCellTest {
 
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void constructTest() {
+
+	}
+	@Test
+	void censusTest() {
+
+	}
+	@Test
+	void profitTest() {
+
+	}
+	@Test
+	void charValueTest() {
+
+	}
+	@Test
+	void typeIndexTest() {
+
+	}
+	@Test
+	void typeTest() {
+
+	}
+	@Test
+	void whoTest() {
+
+	}
+	@Test
+	void nextTest() {
+		
 	}
 
 

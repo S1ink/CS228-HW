@@ -8,8 +8,40 @@ import org.junit.jupiter.api.Test;
 class CellTypeTest {
 
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void getAltTest() {
+
+	}
+	@Test
+	void getCharValueTest() {
+
+	}
+	@Test
+	void getIdxTest() {
+
+	}
+	@Test
+	void getProfitTest() {
+
+	}
+	@Test
+	void getCountTest() {
+
+	}
+	@Test
+	void fromIdxTest() {
+
+	}
+	@Test
+	void idxToCharTest() {
+
+	}
+	@Test
+	void altRuleATest() {
+
+	}
+	@Test
+	void altRuleBTest() {
+
 	}
 
 

@@ -8,8 +8,20 @@ import org.junit.jupiter.api.Test;
 class EmptyTest {
 
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void constructTest() {
+
+	}
+	@Test
+	void typeTest() {
+
+	}
+	@Test
+	void whoTest() {
+
+	}
+	@Test
+	void nextTest() {
+
 	}
 
 
