@@ -104,7 +104,7 @@ class CellTypeTest {
 			test3 = new int[]{0, -3, 0, 2, 0};
 		assertTrue(CellType.altRuleA_Reseller(test1) == true);
 		assertTrue(CellType.altRuleA_Reseller(test2) == false);
-		assertTrue(CellType.altRuleA_Reseller(test3) == true);
+		assertTrue(CellType.altRuleA_Reseller(test3) == false);
 	}
 	/**
 	 * Test that alt rule B produces correct results in a variety of census scenarios.
