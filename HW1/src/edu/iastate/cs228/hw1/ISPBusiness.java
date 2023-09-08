@@ -63,8 +63,13 @@ public class ISPBusiness {
 
 		System.out.print("Please select grid generation method:\n\t1. From file\n\t2. Randomly seeded\n--> ");
 
-		final int sel = input.nextInt();
-		if(input.hasNextLine()) { input.nextLine(); }
+		int sel = 0;
+		try {
+			sel = input.nextInt();
+			// if(input.hasNextLine()) { input.nextLine(); }
+		} catch(Exception e) {
+			sel = -1;
+		}
 
 		// handle file parse errors for when the program is being used by humans --> ex. a PDF file gets passed in as the file to load...
 		try {
