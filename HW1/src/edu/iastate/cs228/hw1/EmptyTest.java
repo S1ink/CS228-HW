@@ -1,4 +1,4 @@
-package edu.iastate.cs228.hw1.test;
+package edu.iastate.cs228.hw1;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,21 +7,19 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 
-import edu.iastate.cs228.hw1.*;
-
 
 /**
  * @author Sam Richter
  * 
- * The OutageTest class tests all {@link Outage} specific public methods.
+ * The EmptyTest class tests all {@link Empty} specific public methods.
  */
-class OutageTest {
+class EmptyTest {
 
 	static Town town;
-	static Outage cell;
+	static Empty cell;
 	
 	/**
-	 * Setup the Town and Outage instances used in multiple of the tests.
+	 * Setup the Town and Empty instances used in multiple of the tests.
 	 */
 	@BeforeAll
 	static void setup() {
@@ -30,16 +28,16 @@ class OutageTest {
 		} catch(FileNotFoundException e) {
 			town = null;
 		}
-		// use [0, 0] becuase that is 'O' in ISP4x4.txt
-		cell = new Outage(town, 0, 0);
+		// use [1, 0] becuase that is 'E' in ISP4x4.txt
+		cell = new Empty(town, 1, 0);
 	}
 
 	/**
-	 * Evaluate if both of Outage's constructors work correctly.
+	 * Evaluate if both of Empty's constructors work correctly.
 	 */
 	@Test
 	void constructTest() {
-		Outage cell2 = new Outage(cell);
+		Empty cell2 = new Empty(cell);
 		assertNotEquals(cell, null);
 		assertNotEquals(cell2, null);
 		assertNotEquals(cell, cell2);
@@ -49,21 +47,21 @@ class OutageTest {
 	 */
 	@Test
 	void typeTest() {
-		assertEquals(cell.type(), CellType.Outage);
+		assertEquals(cell.type(), CellType.Empty);
 	}
 	/**
 	 * Evaluate if the State returned is correct.
 	 */
 	@Test
 	void whoTest() {
-		assertEquals(cell.who(), State.OUTAGE);
+		assertEquals(cell.who(), State.EMPTY);
 	}
 	/**
 	 * Evaluate if the cell can correctly iterate given a known correct next cell type (since we loaded the town from file).
 	 */
 	@Test
 	void nextTest() {
-		assertTrue( cell.next(town).type() == CellType.Empty );
+		assertTrue( cell.next(town).type() == CellType.Casual );
 	}
 
 

@@ -1,4 +1,4 @@
-package edu.iastate.cs228.hw1.test;
+package edu.iastate.cs228.hw1;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,23 +7,19 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 
-import edu.iastate.cs228.hw1.*;
-
 
 /**
  * @author Sam Richter
  * 
- * The ResellerTest class tests all {@link Reseller} specific public methods.
+ * The OutageTest class tests all {@link Outage} specific public methods.
  */
-class ResellerTest {
+class OutageTest {
 
 	static Town town;
-	static Reseller cell;
+	static Outage cell;
 	
 	/**
-	 * @author Sam Richter
-	 * 
-	 * Setup the Town and Reseller instances used in multiple of the tests.
+	 * Setup the Town and Outage instances used in multiple of the tests.
 	 */
 	@BeforeAll
 	static void setup() {
@@ -32,16 +28,16 @@ class ResellerTest {
 		} catch(FileNotFoundException e) {
 			town = null;
 		}
-		// use [0, 1] becuase that is 'R' in ISP4x4.txt
-		cell = new Reseller(town, 0, 1);
+		// use [0, 0] becuase that is 'O' in ISP4x4.txt
+		cell = new Outage(town, 0, 0);
 	}
 
 	/**
-	 * Evaluate if both of Reseller's constructors work correctly.
+	 * Evaluate if both of Outage's constructors work correctly.
 	 */
 	@Test
 	void constructTest() {
-		Reseller cell2 = new Reseller(cell);
+		Outage cell2 = new Outage(cell);
 		assertNotEquals(cell, null);
 		assertNotEquals(cell2, null);
 		assertNotEquals(cell, cell2);
@@ -51,14 +47,14 @@ class ResellerTest {
 	 */
 	@Test
 	void typeTest() {
-		assertEquals(cell.type(), CellType.Reseller);
+		assertEquals(cell.type(), CellType.Outage);
 	}
 	/**
 	 * Evaluate if the State returned is correct.
 	 */
 	@Test
 	void whoTest() {
-		assertEquals(cell.who(), State.RESELLER);
+		assertEquals(cell.who(), State.OUTAGE);
 	}
 	/**
 	 * Evaluate if the cell can correctly iterate given a known correct next cell type (since we loaded the town from file).

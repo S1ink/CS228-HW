@@ -1,4 +1,4 @@
-package edu.iastate.cs228.hw1.test;
+package edu.iastate.cs228.hw1;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,21 +7,21 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 
-import edu.iastate.cs228.hw1.*;
-
 
 /**
  * @author Sam Richter
  * 
- * The EmptyTest class tests all {@link Empty} specific public methods.
+ * The ResellerTest class tests all {@link Reseller} specific public methods.
  */
-class EmptyTest {
+class ResellerTest {
 
 	static Town town;
-	static Empty cell;
+	static Reseller cell;
 	
 	/**
-	 * Setup the Town and Empty instances used in multiple of the tests.
+	 * @author Sam Richter
+	 * 
+	 * Setup the Town and Reseller instances used in multiple of the tests.
 	 */
 	@BeforeAll
 	static void setup() {
@@ -30,16 +30,16 @@ class EmptyTest {
 		} catch(FileNotFoundException e) {
 			town = null;
 		}
-		// use [1, 0] becuase that is 'E' in ISP4x4.txt
-		cell = new Empty(town, 1, 0);
+		// use [0, 1] becuase that is 'R' in ISP4x4.txt
+		cell = new Reseller(town, 0, 1);
 	}
 
 	/**
-	 * Evaluate if both of Empty's constructors work correctly.
+	 * Evaluate if both of Reseller's constructors work correctly.
 	 */
 	@Test
 	void constructTest() {
-		Empty cell2 = new Empty(cell);
+		Reseller cell2 = new Reseller(cell);
 		assertNotEquals(cell, null);
 		assertNotEquals(cell2, null);
 		assertNotEquals(cell, cell2);
@@ -49,21 +49,21 @@ class EmptyTest {
 	 */
 	@Test
 	void typeTest() {
-		assertEquals(cell.type(), CellType.Empty);
+		assertEquals(cell.type(), CellType.Reseller);
 	}
 	/**
 	 * Evaluate if the State returned is correct.
 	 */
 	@Test
 	void whoTest() {
-		assertEquals(cell.who(), State.EMPTY);
+		assertEquals(cell.who(), State.RESELLER);
 	}
 	/**
 	 * Evaluate if the cell can correctly iterate given a known correct next cell type (since we loaded the town from file).
 	 */
 	@Test
 	void nextTest() {
-		assertTrue( cell.next(town).type() == CellType.Casual );
+		assertTrue( cell.next(town).type() == CellType.Empty );
 	}
 
 
