@@ -66,7 +66,7 @@ public class ISPBusiness {
 		int sel = 0;
 		try {
 			sel = input.nextInt();
-			// if(input.hasNextLine()) { input.nextLine(); }
+			if(input.hasNextLine()) { input.nextLine(); }
 		} catch(Exception e) {
 			sel = -1;
 		}
