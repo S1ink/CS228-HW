@@ -11,6 +11,8 @@ import edu.iastate.cs228.hw1.*;
 
 
 /**
+ * @author Sam Richter
+ * 
  * The CasualTest class tests all {@link Casual} specific public methods.
  */
 class CasualTest {

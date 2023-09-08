@@ -11,6 +11,8 @@ import edu.iastate.cs228.hw1.*;
 
 
 /**
+ * @author Sam Richter
+ * 
  * The ResellerTest class tests all {@link Reseller} specific public methods.
  */
 class ResellerTest {
@@ -19,6 +21,8 @@ class ResellerTest {
 	static Reseller cell;
 	
 	/**
+	 * @author Sam Richter
+	 * 
 	 * Setup the Town and Reseller instances used in multiple of the tests.
 	 */
 	@BeforeAll

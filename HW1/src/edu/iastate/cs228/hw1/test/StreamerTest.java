@@ -11,6 +11,8 @@ import edu.iastate.cs228.hw1.*;
 
 
 /**
+ * @author Sam Richter
+ * 
  * The StreamerTest class tests all {@link Streamer} specific public methods.
  */
 class StreamerTest {

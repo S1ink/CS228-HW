@@ -11,6 +11,8 @@ import edu.iastate.cs228.hw1.*;
 
 
 /**
+ * @author Sam Richter
+ * 
  * The OutageTest class tests all {@link Outage} specific public methods.
  */
 class OutageTest {

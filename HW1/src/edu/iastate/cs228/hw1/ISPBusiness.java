@@ -66,31 +66,37 @@ public class ISPBusiness {
 		final int sel = input.nextInt();
 		if(input.hasNextLine()) { input.nextLine(); }
 
-		// option 1: load from file diologue
-		if(sel == 1) {
-			System.out.print("Enter the path to file:\n--> ");
-			// get the file path from input
-			final String f = input.nextLine();
-			try {
-				// if the town instance is empty, create a new one using the file, else regenerate using the file
-				town = (town == null) ? new Town(f) : town.restart(f);
-			} catch(FileNotFoundException e) {
-				System.out.println("Error opening file path: " + e.getMessage());
+		// handle file parse errors for when the program is being used by humans --> ex. a PDF file gets passed in as the file to load...
+		try {
+			// option 1: load from file diologue
+			if(sel == 1) {
+				System.out.print("Enter the path to file:\n--> ");
+				// get the file path from input
+				final String f = input.nextLine();
+				try {
+					// if the town instance is empty, create a new one using the file, else regenerate using the file
+					town = (town == null) ? new Town(f) : town.restart(f);
+				} catch(FileNotFoundException e) {
+					System.out.println("Error opening file path: " + e.getMessage());
+					return;
+				}
+			// option 2: random generation diologue
+			} else if(sel == 2) {
+				System.out.print("Enter the # of rows, # of columns, and a seed:\n--> ");
+				// get the rows, columns, and seed from input
+				final int
+					r = input.nextInt(),
+					c = input.nextInt(),
+					x = input.nextInt();
+				// if the town instance is empty, generate a new one using the parameters, else regenerate using the parameters
+				town = (town == null) ? new Town(r, c, x) : town.restart(r, c, x);
+			// handle invalid inputs
+			} else {
+				System.out.println("Invalid option.");
 				return;
 			}
-		// option 2: random generation diologue
-		} else if(sel == 2) {
-			System.out.print("Enter the # of rows, # of columns, and a seed:\n--> ");
-			// get the rows, columns, and seed from input
-			final int
-				r = input.nextInt(),
-				c = input.nextInt(),
-				x = input.nextInt();
-			// if the town instance is empty, generate a new one using the parameters, else regenerate using the parameters
-			town = (town == null) ? new Town(r, c, x) : town.restart(r, c, x);
-		// handle invalid inputs
-		} else {
-			System.out.println("Invalid Option.");
+		} catch(Exception e) {
+			System.out.println("Grid generation failed due to an exception. >> " + e.getMessage());
 			return;
 		}
 
@@ -158,7 +164,7 @@ public class ISPBusiness {
 
 	}
 	
-	private static final boolean RUN_VERBOSE = true;
+	private static final boolean RUN_VERBOSE = false;
 
 
 }

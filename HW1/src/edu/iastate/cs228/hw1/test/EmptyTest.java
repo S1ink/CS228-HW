@@ -11,6 +11,8 @@ import edu.iastate.cs228.hw1.*;
 
 
 /**
+ * @author Sam Richter
+ * 
  * The EmptyTest class tests all {@link Empty} specific public methods.
  */
 class EmptyTest {

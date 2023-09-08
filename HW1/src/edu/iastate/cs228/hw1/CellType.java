@@ -105,7 +105,7 @@ public enum CellType {
 	 */
 	public static boolean altRuleA_Reseller(int[] census) {
 		// "Any cell that (1) is not a Reseller or Outage and (2) and has (Number of Empty + Number of Outage neighbors less than or equal to 1) converts to Reseller"
-		return (CellType.Empty.getCount(census) + CellType.Outage.getCount(census) <= 1);
+		return (Math.max(CellType.Empty.getCount(census), 0) + Math.max(CellType.Outage.getCount(census), 0) <= 1);
 	}
 	/**
 	 * Test if alternate rule B applies given a neighborhood census.
