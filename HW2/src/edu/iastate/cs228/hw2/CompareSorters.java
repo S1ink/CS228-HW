@@ -1,5 +1,7 @@
 package edu.iastate.cs228.hw2;
 
+import java.io.File;
+
 /**
  *  
  * @author
@@ -15,8 +17,8 @@ package edu.iastate.cs228.hw2;
  */
 
 import java.io.FileNotFoundException;
-import java.util.Scanner; 
-import java.util.Random; 
+import java.util.Scanner;
+import java.util.Random;
 
 
 public class CompareSorters 
@@ -43,7 +45,7 @@ public class CompareSorters
 		//       of the Algorithm type:  SelectionSort, InsertionSort, MergeSort and QuickSort. 
 		// 
 		// 	
-		PointScanner[] scanners = new PointScanner[4]; 
+		PointScanner[] scanners = new PointScanner[4];
 		
 		// For each input of points, do the following. 
 		// 
@@ -56,9 +58,26 @@ public class CompareSorters
 		//		  section 2.
 		//
 		// A sample scenario is given in Section 2 of the project description. 
+
+
+		// String output = "";
+		// for(int i = 0; i < scanners.length; i++) {
+		// 	try {
+		// 		scanners[i] = new PointScanner(pts, Algorithm.values()[i]);
+		// 	} catch (IllegalArgumentException e) {}
+		// 	scanners[i].scan();
+		// 	output += scanners[i].stats();
+		// }
 		
 		
-		System.out.println("Project configured!");
+		final String fname = "test.txt";
+		Point[] arr = null;
+		try {
+			arr = PointScanner.deserializePoints(new File(fname));
+			System.out.println("Parsed Points:\n" + Point.formatArray(arr));
+		} catch(Exception e) {
+			System.out.println("Serialization failed: " + e.getMessage());
+		}
 		
 	}
 	

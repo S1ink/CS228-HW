@@ -28,9 +28,8 @@ public class SelectionSorter extends AbstractSorter
 	 *  
 	 * @param pts  
 	 */
-	public SelectionSorter(Point[] pts)  
-	{
-		// TODO 
+	public SelectionSorter(Point[] pts) throws IllegalArgumentException {
+		super(pts, "SelectionSort");
 	}	
 
 	

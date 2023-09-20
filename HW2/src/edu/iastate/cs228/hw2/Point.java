@@ -8,56 +8,47 @@
 
 public class Point implements Comparable<Point>
 {
-	private int x; 
+	private int x;
 	private int y;
 	
-	public static boolean xORy;  // compare x coordinates if xORy == true and y coordinates otherwise 
-	                             // To set its value, use Point.xORy = true or false. 
-	
-	public Point()  // default constructor
-	{
+	public static boolean xORy;	// compare x coordinates if xORy == true and y coordinates otherwise 
+								// To set its value, use Point.xORy = true or false. 
+
+
+	public Point() {	// default constructor
 		// x and y get default value 0
 	}
-	
-	public Point(int x, int y)
-	{
-		this.x = x;  
-		this.y = y;   
+	public Point(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
-	
-	public Point(Point p) { // copy constructor
+	public Point(Point p) {		// copy constructor
 		x = p.getX();
 		y = p.getY();
 	}
 
-	public int getX()   
-	{
+
+	public int getX() {
 		return x;
 	}
-	
-	public int getY()
-	{
+	public int getY() {
 		return y;
 	}
 	
 	/** 
-	 * Set the value of the static instance variable xORy. 
+	 * Set the value of the static instance variable xORy.
 	 * @param xORy
 	 */
-	public static void setXorY(boolean xORy)
-	{
-		// TODO 
+	public static void setXorY(boolean xORy) {
+		Point.xORy = xORy;
 	}
-	
-	
+
+
 	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj == null || obj.getClass() != this.getClass())
-		{
+	public boolean equals(Object obj) {
+		if (obj == null || obj.getClass() != this.getClass()) {
 			return false;
 		}
-    
 		Point other = (Point) obj;
 		return x == other.x && y == other.y;   
 	}
@@ -81,9 +72,39 @@ public class Point implements Comparable<Point>
 	 * Output a point in the standard form (x, y). 
 	 */
 	@Override
-    public String toString() 
-	{
-		// TODO 
-		return null; 
+	public String toString() {
+		return String.format("(%d, %d)", this.x, this.y);
 	}
+
+
+
+
+	/**
+	 * 
+	 * @param a
+	 * @return
+	 */
+	public static Point[] deepCopy(Point[] a) {
+		if(a == null) { return null; }
+		final Point[] ret = new Point[a.length];
+		for(int i = 0; i < a.length; i++) {
+			ret[i] = a[i] != null ? new Point(a[i]) : null;
+		}
+		return ret;
+	}
+	/**
+	 * 
+	 * @param a
+	 * @return
+	 */
+	public static String formatArray(Point[] a) {
+		String ret = "[\n";
+		for(Point p : a) {
+			ret += "\t" + p.toString() + "\n";
+		}
+		ret += "]\n";
+		return ret;
+	}
+
+
 }

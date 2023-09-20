@@ -26,18 +26,16 @@ public abstract class AbstractSorter
 	protected String algorithm = null; // "selection sort", "insertion sort", "mergesort", or
 	                                   // "quicksort". Initialized by a subclass constructor.
 		 
-	protected Comparator<Point> pointComparator = null;  
+	protected Comparator<Point> pointComparator = null; 
 	
 	
 	// Add other protected or private instance variables you may need. 
 	
 
-	protected AbstractSorter()
-	{
+	protected AbstractSorter() {
 		// No implementation needed. Provides a default super constructor to subclasses. 
 		// Removable after implementing SelectionSorter, InsertionSorter, MergeSorter, and QuickSorter.
 	}
-	
 	
 	/**
 	 * This constructor accepts an array of points as input. Copy the points into the array points[]. 
@@ -45,12 +43,20 @@ public abstract class AbstractSorter
 	 * @param  pts  input array of points 
 	 * @throws IllegalArgumentException if pts == null or pts.length == 0.
 	 */
-	protected AbstractSorter(Point[] pts) throws IllegalArgumentException
-	{
-		// TODO 
+	protected AbstractSorter(Point[] pts) throws IllegalArgumentException {
+		if(pts == null || pts.length == 0) {
+			throw new IllegalArgumentException("Points array is empty or null!");
+		}
+		this.points = Point.deepCopy(pts);
 	}
 
-		
+	/**
+	 * 
+	*/
+	protected AbstractSorter(Point[] pts, String algo) throws IllegalArgumentException {
+		this(pts);
+		this.algorithm = algo;
+	}
 	
 	
 	
@@ -101,7 +107,13 @@ public abstract class AbstractSorter
 	 */
 	public void getPoints(Point[] pts)
 	{
-		// TODO 
+		if(pts != null) {
+			if(pts.length >= this.points.length) {
+				for(int i = 0; i < this.points.length; i++) {
+					pts[i] = new Point(this.points[i]);
+				}
+			}
+		}
 	}
 	
 

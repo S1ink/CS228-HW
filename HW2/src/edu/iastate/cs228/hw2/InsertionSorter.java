@@ -18,8 +18,7 @@ import java.util.InputMismatchException;
  *
  */
 
-public class InsertionSorter extends AbstractSorter 
-{
+public class InsertionSorter extends AbstractSorter {
 	// Other private instance variables if you need ... 
 	
 	/**
@@ -28,9 +27,8 @@ public class InsertionSorter extends AbstractSorter
 	 * 
 	 * @param pts  
 	 */
-	public InsertionSorter(Point[] pts) 
-	{
-		// TODO 
+	public InsertionSorter(Point[] pts) throws IllegalArgumentException	{
+		super(pts, "InsertionSort");
 	}	
 
 	

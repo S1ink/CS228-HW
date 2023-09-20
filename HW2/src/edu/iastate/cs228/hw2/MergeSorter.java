@@ -27,9 +27,8 @@ public class MergeSorter extends AbstractSorter
 	 *  
 	 * @param pts   input array of integers
 	 */
-	public MergeSorter(Point[] pts) 
-	{
-		// TODO  
+	public MergeSorter(Point[] pts) throws IllegalArgumentException {
+		super(pts, "MergeSort");
 	}
 
 
