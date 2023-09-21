@@ -26,7 +26,7 @@ public abstract class AbstractSorter
 	protected String algorithm = null; // "selection sort", "insertion sort", "mergesort", or
 	                                   // "quicksort". Initialized by a subclass constructor.
 		 
-	protected Comparator<Point> pointComparator = null; 
+	protected Comparator<Point> pointComparator = null;
 	
 	
 	// Add other protected or private instance variables you may need. 
@@ -74,8 +74,7 @@ public abstract class AbstractSorter
 	 * @throws IllegalArgumentException if order is less than 0 or greater than 1
 	 *        
 	 */
-	public void setComparator(int order) throws IllegalArgumentException
-	{
+	public void setComparator(int order) throws IllegalArgumentException {
 		// TODO 
 	}
 
@@ -94,9 +93,8 @@ public abstract class AbstractSorter
 	 * 
 	 * @return	median point 
 	 */
-	public Point getMedian()
-	{
-		return points[points.length/2]; 
+	public Point getMedian() {
+		return points[points.length / 2]; 
 	}
 	
 	
@@ -105,8 +103,7 @@ public abstract class AbstractSorter
 	 * 
 	 * @param pts
 	 */
-	public void getPoints(Point[] pts)
-	{
+	public void getPoints(Point[] pts) {
 		if(pts != null) {
 			if(pts.length >= this.points.length) {
 				for(int i = 0; i < this.points.length; i++) {
@@ -123,8 +120,11 @@ public abstract class AbstractSorter
 	 * @param i
 	 * @param j
 	 */
-	protected void swap(int i, int j)
-	{
-		// TODO 
-	}	
+	protected void swap(int i, int j) {
+		final Point _i = this.points[i];
+		this.points[i] = this.points[j];
+		this.points[j] = _i;
+	}
+
+
 }

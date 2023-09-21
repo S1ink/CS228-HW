@@ -64,18 +64,18 @@ public class PointScanner {
 	/**
 	 * Carry out two rounds of sorting using the algorithm designated by sortingAlgorithm as follows:  
 	 *    
-	 *     a) Sort points[] by the x-coordinate to get the median x-coordinate. 
+	 *     a) Sort points[] by the x-coordinate to get the median x-coordinate.
 	 *     b) Sort points[] again by the y-coordinate to get the median y-coordinate.
-	 *     c) Construct medianCoordinatePoint using the obtained median x- and y-coordinates.     
+	 *     c) Construct medianCoordinatePoint using the obtained median x- and y-coordinates.
 	 *  
 	 * Based on the value of sortingAlgorithm, create an object of SelectionSorter, InsertionSorter, MergeSorter,
-	 * or QuickSorter to carry out sorting.       
+	 * or QuickSorter to carry out sorting.
 	 * @param algo
 	 * @return
 	 */
 	public void scan() {
 		// TODO  
-		AbstractSorter aSorter; 
+		AbstractSorter aSorter;
 		
 		// create an object to be referenced by aSorter according to sortingAlgorithm. for each of the two 
 		// rounds of sorting, have aSorter do the following: 
@@ -93,7 +93,7 @@ public class PointScanner {
 	}
 
 	/**
-	 * Outputs performance statistics in the format: 
+	 * Outputs performance statistics in the format:
 	 * 
 	 * <sorting algorithm> <size>  <time>
 	 * 
@@ -101,7 +101,7 @@ public class PointScanner {
 	 * 
 	 * selection sort   1000	  9200867
 	 * 
-	 * Use the spacing in the sample run in Section 2 of the project description. 
+	 * Use the spacing in the sample run in Section 2 of the project description.
 	 */
 	public String stats() {
 		// TODO
@@ -110,18 +110,18 @@ public class PointScanner {
 
 	/**
 	 * This method, called after scanning, writes point data into a file by outputFileName. The format 
-	 * of data in the file is the same as printed out from toString().  The file can help you verify 
+	 * of data in the file is the same as printed out from toString(). The file can help you verify 
 	 * the full correctness of a sorting result and debug the underlying algorithm. 
 	 * 
 	 * @throws FileNotFoundException
 	 */
-	public void writeMCPToFile() throws FileNotFoundException {
+	public void writeMCPToFile(String outputFileName) throws FileNotFoundException {
 		// TODO 
 	}
 
 	/**
-	 * Write MCP after a call to scan(),  in the format "MCP: (x, y)"   The x and y coordinates of the point are displayed on the same line with exactly one blank space 
-	 * in between. 
+	 * Write MCP after a call to scan(), in the format "MCP: (x, y)" The x and y coordinates of the point are displayed on the same line with exactly one blank space
+	 * in between.
 	 */
 	@Override
 	public String toString() {

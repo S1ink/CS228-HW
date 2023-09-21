@@ -1,4 +1,4 @@
- package edu.iastate.cs228.hw2;
+package edu.iastate.cs228.hw2;
 
 /**
  *  
@@ -50,24 +50,34 @@ public class Point implements Comparable<Point>
 			return false;
 		}
 		Point other = (Point) obj;
-		return x == other.x && y == other.y;   
+		return x == other.x && y == other.y;
+	}
+
+	protected boolean fastEquals(Point p) {
+		return p != null && this.x == p.x && this.y == p.y;
 	}
 
 	/**
 	 * Compare this point with a second point q depending on the value of the static variable xORy 
-	 * @param 	q 
-	 * @return  -1  if (xORy == true && (this.x < q.x || (this.x == q.x && this.y < q.y))) 
+	 * @param 	q
+	 * @return  -1  if (xORy == true && (this.x < q.x || (this.x == q.x && this.y < q.y)))
 	 *                || (xORy == false && (this.y < q.y || (this.y == q.y && this.x < q.x)))
-	 * 		    0   if this.x == q.x && this.y == q.y)  
-	 * 			1	otherwise 
+	 * 		    0   if this.x == q.x && this.y == q.y)
+	 * 			1	otherwise
 	 */
-	public int compareTo(Point q)
-	{
-		return 0; 
-		// TODO; 
+	public int compareTo(Point q) {
+		if(q != null) {
+			if(this.fastEquals(q)) { return 0; }
+			if(xORy) {
+				
+			} else {
+
+			}
+		}
+		return -2;
 	}
-	
-	
+
+
 	/**
 	 * Output a point in the standard form (x, y). 
 	 */
@@ -78,6 +88,13 @@ public class Point implements Comparable<Point>
 
 
 
+
+	public static int compareX(Point a, Point b) {
+		return (int)Math.signum(a.x - b.x);
+	}
+	public static int compareY(Point a, Point b) {
+		return (int)Math.signum(a.y - b.y);
+	}
 
 	/**
 	 * 
@@ -105,6 +122,20 @@ public class Point implements Comparable<Point>
 		ret += "]\n";
 		return ret;
 	}
+	// /**
+	//  * 
+	//  * @param a
+	//  * @return
+	//  */
+	// public static String formatGrid(Point[] a) {
+	// 	int hx, lx, hy, ly;
+	// 	for(Point p : a) {
+	// 		hx = p.x > hx ? p.x : hx;
+	// 		lx = p.x < lx ? p.x : lx;
+	// 		hy = p.y > hx ? p.y : hy;
+	// 		ly = p.y < lx ? p.y : ly;
+	// 	}
+	// }
 
 
 }

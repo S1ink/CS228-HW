@@ -38,8 +38,7 @@ public class QuickSorter extends AbstractSorter {
 	 * 
 	 */
 	@Override 
-	public void sort()
-	{
+	public void sort() {
 		// TODO 
 	}
 	
@@ -50,9 +49,10 @@ public class QuickSorter extends AbstractSorter {
 	 * @param first  starting index of the subarray
 	 * @param last   ending index of the subarray
 	 */
-	private void quickSortRec(int first, int last)
-	{
-		// TODO
+	private void quickSortRec(int first, int last) {
+
+		
+
 	}
 	
 	
@@ -73,4 +73,17 @@ public class QuickSorter extends AbstractSorter {
 
 	
 	// Other private methods if needed ...
+
+
+
+	public static void <T>quickSort(T[] arr, Comparator<T> comp) {
+
+		final int pivot_idx = 0;
+		final T pivot = arr[pivot_idx];
+
+
+
+	}
+
+
 }

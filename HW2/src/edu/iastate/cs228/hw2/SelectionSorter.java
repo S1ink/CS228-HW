@@ -18,8 +18,8 @@ import java.util.InputMismatchException;
  *
  */
 
-public class SelectionSorter extends AbstractSorter
-{
+public class SelectionSorter extends AbstractSorter {
+
 	// Other private instance variables if you need ... 
 	
 	/**
@@ -30,16 +30,34 @@ public class SelectionSorter extends AbstractSorter
 	 */
 	public SelectionSorter(Point[] pts) throws IllegalArgumentException {
 		super(pts, "SelectionSort");
-	}	
+	}
 
-	
+
 	/** 
 	 * Apply selection sort on the array points[] of the parent class AbstractSorter.  
 	 * 
 	 */
 	@Override 
-	public void sort()
-	{
-		// TODO 
-	}	
+	public void sort() {
+
+		for(int i = 0; i < super.points.length - 1; i++) {
+
+			int mi = i;
+			for(int p = i + 1; p < super.points.length; p++) {
+				if(super.pointComparator.compare(
+					super.points[p],
+					super.points[mi]
+				) < 0) {
+					mi = p;
+				}
+			}
+			if(mi != i) {
+				super.swap(i, mi);
+			}
+
+		}
+
+	}
+
+
 }

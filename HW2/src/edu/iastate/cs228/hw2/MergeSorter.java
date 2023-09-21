@@ -13,7 +13,7 @@ import java.util.InputMismatchException;
 
 /**
  * 
- * This class implements the mergesort algorithm.   
+ * This class implements the mergesort algorithm.
  *
  */
 
@@ -37,25 +37,25 @@ public class MergeSorter extends AbstractSorter
 	 * 
 	 */
 	@Override 
-	public void sort()
-	{
-		// TODO 
+	public void sort() {
+		this.mergeSortRec(super.points);
 	}
 
 	
 	/**
 	 * This is a recursive method that carries out mergesort on an array pts[] of points. One 
 	 * way is to make copies of the two halves of pts[], recursively call mergeSort on them, 
-	 * and merge the two sorted subarrays into pts[].   
+	 * and merge the two sorted subarrays into pts[].
 	 * 
 	 * @param pts	point array 
 	 */
-	private void mergeSortRec(Point[] pts)
-	{
-		
+	private void mergeSortRec(Point[] pts) {
+
+
+
 	}
 
-	
 	// Other private methods if needed ...
+
 
 }
