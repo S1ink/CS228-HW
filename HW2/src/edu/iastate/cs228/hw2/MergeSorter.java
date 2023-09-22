@@ -2,7 +2,8 @@ package edu.iastate.cs228.hw2;
 
 import java.io.FileNotFoundException;
 import java.lang.NumberFormatException; 
-import java.lang.IllegalArgumentException; 
+import java.lang.IllegalArgumentException;
+import java.util.Comparator;
 import java.util.InputMismatchException;
 
 /**
@@ -17,8 +18,8 @@ import java.util.InputMismatchException;
  *
  */
 
-public class MergeSorter extends AbstractSorter
-{
+public class MergeSorter extends AbstractSorter {
+
 	// Other private instance variables if needed
 	
 	/** 
@@ -51,11 +52,46 @@ public class MergeSorter extends AbstractSorter
 	 */
 	private void mergeSortRec(Point[] pts) {
 
-
+		mergeSort(pts, this.pointComparator);
 
 	}
 
 	// Other private methods if needed ...
+
+
+
+
+
+	public static <T> void mergeSort(T[] arr, Comparator<T> comp) {
+
+		return mergeSort(ArrayView.window(arr), comp);
+
+	}
+	private static <T> void mergeSort(ArrayView<T> arr, Comparator<T> comp) {
+
+		final int len = arr.size();
+
+		// base cases
+		if(len <= 1) {
+			return;
+		}
+		if(len == 2) {
+			if(comp.compare(arr.get(0), arr.get(1)) < 0) {
+				arr.refSwap(0, 1);
+			}
+			return;
+		}
+
+		final int split = len / 2;
+		final ArrayView<T>
+			a = arr.endAt(split),
+			b = arr.startingAt(split + 1);
+		mergeSort(a, comp);
+		mergeSort(b, comp);
+
+		// merge code
+
+	}
 
 
 }
