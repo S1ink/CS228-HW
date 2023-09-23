@@ -17,7 +17,13 @@ import java.io.File;
  */
 
 import java.io.FileNotFoundException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
 
@@ -70,14 +76,76 @@ public class CompareSorters
 		// }
 		
 		
-		final String fname = "test.txt";
-		Point[] arr = null;
-		try {
-			arr = PointScanner.deserializePoints(new File(fname));
-			System.out.println("Parsed Points:\n" + Point.formatArray(arr));
-		} catch(Exception e) {
-			System.out.println("Serialization failed: " + e.getMessage());
+//		final String fname = "test.txt";
+//		Point[] arr = null;
+//		try {
+//			arr = PointScanner.deserializePoints(new File(fname));
+//			System.out.println("Parsed Points:\n" + Point.formatArray(arr));
+//		} catch(Exception e) {
+//			System.out.println("Serialization failed: " + e.getMessage());
+//		}
+
+		final Integer[]
+			vals1 = new Integer[1000],
+			vals2 = new Integer[1000],
+			vals3 = new Integer[1000],
+			vals4 = new Integer[1000];
+		Random rand = new Random();
+		for(int i = 0; i < 1000; i++) {
+			vals1[i] = vals2[i] = vals3[i] = vals4[i] = rand.nextInt(100);
 		}
+		
+		// final Integer[] vals1 = new Integer[]{0, 0, 98, 8, 4, 2, -937, 3, 2, 2, 4, 6, -10001};
+		// final Integer[] vals2 = new Integer[]{0, 0, 98, 8, 4, 2, -937, 3, 2, 2, 4, 6, -10001};
+		// final Integer[] vals3 = new Integer[]{0, 0, 98, 8, 4, 2, -937, 3, 2, 2, 4, 6, -10001};
+		// final Integer[] vals4 = new Integer[]{0, 0, 98, 8, 4, 2, -937, 3, 2, 2, 4, 6, -10001};
+//		MergeSorter.mergeSort(vals, (Integer a, Integer b)->{ return b - a; });
+		// for(Integer v : vals1) {
+		// 	System.out.println(v);
+		// }
+		final Comparator<Integer> comp = (Integer a, Integer b)->{ return a - b; };
+		final long a = System.nanoTime();
+		Sorting.insertionSort(vals1, comp);
+		final long b = System.nanoTime();
+		Sorting.selectionSort(vals2, comp);
+		final long c = System.nanoTime();
+		Sorting.mergeSort(vals3, comp);
+		final long d = System.nanoTime();
+		Sorting.quickSort(vals4, comp);
+		final long e = System.nanoTime();
+		
+		System.out.println(String.format(
+			"Insertion Sort:\t%d\n"+
+			"Selection Sort:\t%d\n"+
+			"Merge Sort:\t\t%d\n"+
+			"Quick Sort:\t\t%d\n",
+			(b - a), (c - b), (d - c), (e - d)
+		));
+		
+		try {
+			Files.write( // write to file
+				Paths.get("debug.txt"), // get path from file
+				Collections.singleton(Arrays.toString(vals3)), // transform array to collection using singleton
+				Charset.forName("UTF-8") // formatting
+			);
+		} catch(Exception ex) {}
+		
+		// System.out.println("-------------");
+		// for(Integer v : vals1) {
+		// 	System.out.println(v);
+		// }
+		// System.out.println("-------------");
+		// for(Integer v : vals2) {
+		// 	System.out.println(v);
+		// }
+		// System.out.println("-------------");
+		// for(Integer v : vals3) {
+		// 	System.out.println(v);
+		// }
+		// System.out.println("-------------");
+		// for(Integer v : vals4) {
+		// 	System.out.println(v);
+		// }
 		
 	}
 	

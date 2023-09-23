@@ -39,7 +39,7 @@ public class QuickSorter extends AbstractSorter {
 	 */
 	@Override 
 	public void sort() {
-		// TODO 
+		Sorting.quickSort(super.points, super.pointComparator);
 	}
 	
 	
@@ -73,17 +73,6 @@ public class QuickSorter extends AbstractSorter {
 
 	
 	// Other private methods if needed ...
-
-
-
-	public static void <T>quickSort(T[] arr, Comparator<T> comp) {
-
-		final int pivot_idx = 0;
-		final T pivot = arr[pivot_idx];
-
-
-
-	}
 
 
 }

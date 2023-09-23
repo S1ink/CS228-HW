@@ -2,7 +2,8 @@ package edu.iastate.cs228.hw2;
 
 import java.io.FileNotFoundException;
 import java.lang.NumberFormatException; 
-import java.lang.IllegalArgumentException; 
+import java.lang.IllegalArgumentException;
+import java.util.Comparator;
 import java.util.InputMismatchException;
 
 
@@ -39,24 +40,7 @@ public class SelectionSorter extends AbstractSorter {
 	 */
 	@Override 
 	public void sort() {
-
-		for(int i = 0; i < super.points.length - 1; i++) {
-
-			int mi = i;
-			for(int p = i + 1; p < super.points.length; p++) {
-				if(super.pointComparator.compare(
-					super.points[p],
-					super.points[mi]
-				) < 0) {
-					mi = p;
-				}
-			}
-			if(mi != i) {
-				super.swap(i, mi);
-			}
-
-		}
-
+		Sorting.selectionSort(super.points, super.pointComparator);
 	}
 
 
