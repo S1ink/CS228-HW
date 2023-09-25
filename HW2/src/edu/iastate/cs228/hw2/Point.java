@@ -1,5 +1,7 @@
 package edu.iastate.cs228.hw2;
 
+import java.util.Random;
+
 /**
  *  
  * @author
@@ -53,7 +55,7 @@ public class Point implements Comparable<Point>
 		return x == other.x && y == other.y;
 	}
 
-	protected boolean fastEquals(Point p) {
+	protected boolean equalsP(Point p) {	// cut out all the extra checks if we already have a Point type
 		return p != null && this.x == p.x && this.y == p.y;
 	}
 
@@ -67,12 +69,7 @@ public class Point implements Comparable<Point>
 	 */
 	public int compareTo(Point q) {
 		if(q != null) {
-			if(this.fastEquals(q)) { return 0; }
-			if(xORy) {
-				
-			} else {
-
-			}
+			return xORy ? compareXY(this, q) : compareYX(this, q);
 		}
 		return -2;
 	}
@@ -90,10 +87,28 @@ public class Point implements Comparable<Point>
 
 
 	public static int compareX(Point a, Point b) {
-		return (int)Math.signum(a.x - b.x);
+		return a.x - b.x;
 	}
 	public static int compareY(Point a, Point b) {
-		return (int)Math.signum(a.y - b.y);
+		return a.y - b.y;
+	}
+	public static int compareXY(Point a, Point b) {
+		final int x = compareX(a, b);
+		return x == 0 ? compareY(a, b) : x;
+	}
+	public static int compareYX(Point a, Point b) {
+		final int y = compareY(a, b);
+		return y == 0 ? compareX(a, b) : y;
+	}
+
+	public static Point genRange(int m, int M, Random r) {
+		return new Point(
+			r.nextInt(M - m + 1) + m,
+			r.nextInt(M - m + 1) + m
+		);
+	}
+	public static Point genRange(int R, Random r) {
+		return genRange(-R, R, r);
 	}
 
 	/**
@@ -130,11 +145,12 @@ public class Point implements Comparable<Point>
 	// public static String formatGrid(Point[] a) {
 	// 	int hx, lx, hy, ly;
 	// 	for(Point p : a) {
-	// 		hx = p.x > hx ? p.x : hx;
-	// 		lx = p.x < lx ? p.x : lx;
-	// 		hy = p.y > hx ? p.y : hy;
-	// 		ly = p.y < lx ? p.y : ly;
+	// 		hx = (p.x > hx ? p.x : hx) * 11 / 10;	// 10% buffer
+	// 		lx = (p.x < lx ? p.x : lx) * 11 / 10;
+	// 		hy = (p.y > hx ? p.y : hy) * 11 / 10;
+	// 		ly = (p.y < lx ? p.y : ly) * 11 / 10;
 	// 	}
+	// 	final int MAX_SIZE = 25;
 	// }
 
 

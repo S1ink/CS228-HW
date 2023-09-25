@@ -27,8 +27,14 @@ import java.util.Comparator;
 import java.util.Random;
 
 
-public class CompareSorters 
-{
+public class CompareSorters {
+
+	private static String iterate(Point[] points) {
+
+		
+
+	}
+
 	/**
 	 * Repeatedly take integer sequences either randomly generated or read from files. 
 	 * Use them as coordinates to construct points.  Scan these points with respect to their 
@@ -163,8 +169,14 @@ public class CompareSorters
 	 */
 	public static Point[] generateRandomPoints(int numPts, Random rand) throws IllegalArgumentException
 	{ 
-		return null; 
-		// TODO 
+		if(numPts < 1) {
+			throw new IllegalArgumentException("Array must include at least 1 Point!");
+		}
+		final Point[] arr = new Point[numPts];
+		for(int i = 0; i < numPts; i++) {
+			arr[i] = Point.genRange(50, rand);
+		}
+		return arr;
 	}
 	
 }

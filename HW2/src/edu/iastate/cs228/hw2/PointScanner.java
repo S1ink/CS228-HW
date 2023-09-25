@@ -7,6 +7,10 @@ package edu.iastate.cs228.hw2;
  */
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -25,6 +29,7 @@ public class PointScanner {
 	private Point medianCoordinatePoint;	// point whose x and y coordinates are respectively the medians of 
 											// the x coordinates and y coordinates of those points in the array points[].
 	private Algorithm sortingAlgorithm;
+	private String algo_name;
 
 	protected long scanTime;				// execution time in nanoseconds.
 
@@ -62,7 +67,7 @@ public class PointScanner {
 
 
 	/**
-	 * Carry out two rounds of sorting using the algorithm designated by sortingAlgorithm as follows:  
+	 * Carry out two rounds of sorting using the algorithm designated by sortingAlgorithm as follows:
 	 *    
 	 *     a) Sort points[] by the x-coordinate to get the median x-coordinate.
 	 *     b) Sort points[] again by the y-coordinate to get the median y-coordinate.
@@ -70,26 +75,29 @@ public class PointScanner {
 	 *  
 	 * Based on the value of sortingAlgorithm, create an object of SelectionSorter, InsertionSorter, MergeSorter,
 	 * or QuickSorter to carry out sorting.
+	 * 
 	 * @param algo
 	 * @return
 	 */
 	public void scan() {
-		// TODO  
-		AbstractSorter aSorter;
-		
-		// create an object to be referenced by aSorter according to sortingAlgorithm. for each of the two 
-		// rounds of sorting, have aSorter do the following: 
-		// 
-		//     a) call setComparator() with an argument 0 or 1. 
-		//
-		//     b) call sort(). 		
-		// 
-		//     c) use a new Point object to store the coordinates of the medianCoordinatePoint
-		//
-		//     d) set the medianCoordinatePoint reference to the object with the correct coordinates.
-		//
-		//     e) sum up the times spent on the two sorting rounds and set the instance variable scanTime. 
-		
+
+		AbstractSorter sorter = genSorter(this.sortingAlgorithm, this.points);
+		this.algo_name = sorter.toString();
+		try{
+			sorter.setComparator(0);
+			final long a = System.nanoTime();
+			sorter.sort();
+			final long b = System.nanoTime();
+			final int x = sorter.getMedian().getX();
+			sorter.setComparator(1);
+			final long c = System.nanoTime();
+			sorter.sort();
+			final long d = System.nanoTime();
+			final int y = sorter.getMedian().getY();
+			this.medianCoordinatePoint = new Point(x, y);
+			this.scanTime = (b - a) + (d - c);
+		} catch(IllegalArgumentException e) {}
+
 	}
 
 	/**
@@ -104,8 +112,7 @@ public class PointScanner {
 	 * Use the spacing in the sample run in Section 2 of the project description.
 	 */
 	public String stats() {
-		// TODO
-		return null;
+		return String.format("%s\t%d\t%d", this.algo_name, this.points.length, this.scanTime);
 	}
 
 	/**
@@ -116,7 +123,9 @@ public class PointScanner {
 	 * @throws FileNotFoundException
 	 */
 	public void writeMCPToFile(String outputFileName) throws FileNotFoundException {
-		// TODO 
+		try {
+			Files.write(Paths.get(outputFileName), this.toString().getBytes());
+		} catch(IOException e) {}
 	}
 
 	/**
@@ -125,12 +134,21 @@ public class PointScanner {
 	 */
 	@Override
 	public String toString() {
-		// TODO
-		return null;
+		return "MCP: " + (this.medianCoordinatePoint == null ? "(0, 0)" : this.medianCoordinatePoint.toString());
 	}
 
 
 
+
+	private static AbstractSorter genSorter(Algorithm a, Point[] pts) {
+		switch(a) {
+			case SelectionSort:	return new SelectionSorter(pts);
+			case InsertionSort:	return new InsertionSorter(pts);
+			case MergeSort:		return new MergeSorter(pts);
+			case QuickSort:		return new QuickSorter(pts);
+			default:			return null;
+		}
+	}
 
 	public static Point[] deserializePoints(File f) throws FileNotFoundException, InputMismatchException {
 		final ArrayList<Integer> buff = new ArrayList<>();

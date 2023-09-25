@@ -29,7 +29,7 @@ public abstract class AbstractSorter
 	protected Comparator<Point> pointComparator = null;
 	
 	
-	// Add other protected or private instance variables you may need. 
+	// Add other protected or private instance variables you may need.
 	
 
 	protected AbstractSorter() {
@@ -64,10 +64,10 @@ public abstract class AbstractSorter
 	/**
 	 * Generates a comparator on the fly that compares by x-coordinate if order == 0, by y-coordinate
 	 * if order == 1. Assign the 
-     * comparator to the variable pointComparator. 
+     * comparator to the variable pointComparator.
      *  
 	 * 
-	 * @param order  0   by x-coordinate 
+	 * @param order  0   by x-coordinate
 	 * 				 1   by y-coordinate
 	 * 			    
 	 * 
@@ -75,7 +75,11 @@ public abstract class AbstractSorter
 	 *        
 	 */
 	public void setComparator(int order) throws IllegalArgumentException {
-		// TODO 
+		if(order <= 1 && order >= 0) {
+			this.pointComparator = (order == 0) ? Point::compareXY : Point::compareYX;
+		} else {
+			throw new IllegalArgumentException("Order must be 1 or 0");
+		}
 	}
 
 	
@@ -85,7 +89,7 @@ public abstract class AbstractSorter
 	 * 
 	 * Should be protected. Made public for testing. 
 	 */
-	public abstract void sort(); 
+	public abstract void sort();
 	
 	
 	/**
@@ -94,7 +98,7 @@ public abstract class AbstractSorter
 	 * @return	median point 
 	 */
 	public Point getMedian() {
-		return points[points.length / 2]; 
+		return points[(points.length - 1) / 2];
 	}
 	
 	
@@ -115,7 +119,7 @@ public abstract class AbstractSorter
 	
 
 	/**
-	 * Swaps the two elements indexed at i and j respectively in the array points[]. 
+	 * Swaps the two elements indexed at i and j respectively in the array points[].
 	 * 
 	 * @param i
 	 * @param j
@@ -124,6 +128,12 @@ public abstract class AbstractSorter
 		final Point _i = this.points[i];
 		this.points[i] = this.points[j];
 		this.points[j] = _i;
+	}
+
+
+	@Override
+	public String toString() {
+		return this.algorithm;
 	}
 
 

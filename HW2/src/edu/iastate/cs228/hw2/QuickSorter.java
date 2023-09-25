@@ -29,7 +29,7 @@ public class QuickSorter extends AbstractSorter {
 	 * @param pts   input array of integers
 	 */
 	public QuickSorter(Point[] pts) throws IllegalArgumentException	{
-		super(pts, "QuickSort");
+		super(pts, "QuickSort    ");
 	}
 		
 
