@@ -29,8 +29,17 @@ import java.util.Random;
 
 public class CompareSorters {
 
-	private static String iterate(Point[] points) {
+	private static String iterate(Point[] dataset) {
+		final Algorithm[] algos = Algorithm.values();
+		final PointScanner[] scanners = new PointScanner[algos.length];
+		for(int i = 0; i < scanners.length; i++) {
+			try{
+				scanners[i] = new PointScanner(dataset, algos[i]);
+				scanners[i].scan();
+			} catch(IllegalArgumentException e) {
 
+			}
+		}
 		
 
 	}
@@ -43,7 +52,7 @@ public class CompareSorters {
 	 * @param args
 	 **/
 	public static void main(String[] args) throws FileNotFoundException
-	{		
+	{
 		// TODO 
 		// 
 		// Conducts multiple rounds of comparison of four sorting algorithms.  Within each round, 

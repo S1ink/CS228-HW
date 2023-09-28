@@ -1,46 +1,32 @@
 package edu.iastate.cs228.hw2;
 
-/**
- *  
- * @author
- *
- */
-
+import java.lang.IllegalArgumentException;
+import java.util.InputMismatchException;
 import java.util.Comparator;
 import java.io.FileNotFoundException;
-import java.lang.IllegalArgumentException; 
-import java.util.InputMismatchException;
+
 
 /**
- * 
- * This abstract class is extended by SelectionSort, InsertionSort, MergeSort, and QuickSort.
- * It stores the input (later the sorted) sequence. 
- *
+ * @author Sam Richter
  */
-public abstract class AbstractSorter
-{
-	
-	protected Point[] points;    // array of points operated on by a sorting algorithm. 
-	                             // stores ordered points after a call to sort(). 
-	
-	protected String algorithm = null; // "selection sort", "insertion sort", "mergesort", or
-	                                   // "quicksort". Initialized by a subclass constructor.
-		 
-	protected Comparator<Point> pointComparator = null;
-	
-	
-	// Add other protected or private instance variables you may need.
-	
 
-	protected AbstractSorter() {
-		// No implementation needed. Provides a default super constructor to subclasses. 
-		// Removable after implementing SelectionSorter, InsertionSorter, MergeSorter, and QuickSorter.
-	}
-	
+/**
+ * This abstract class is extended by SelectionSort, InsertionSort, MergeSort, and QuickSort.
+ * It stores the input (later the sorted) sequence.
+ */
+public abstract class AbstractSorter {
+
+	protected Point[] points;	// array of points operated on by a sorting algorithm.
+								// stores ordered points after a call to sort().
+	protected String algorithm = null;	// "selection sort", "insertion sort", "mergesort", or
+										// "quicksort". Initialized by a subclass constructor.
+	protected Comparator<Point> pointComparator = null;
+
+
 	/**
 	 * This constructor accepts an array of points as input. Copy the points into the array points[]. 
 	 * 
-	 * @param  pts  input array of points 
+	 * @param  pts - input array of points
 	 * @throws IllegalArgumentException if pts == null or pts.length == 0.
 	 */
 	protected AbstractSorter(Point[] pts) throws IllegalArgumentException {
@@ -49,63 +35,53 @@ public abstract class AbstractSorter
 		}
 		this.points = Point.deepCopy(pts);
 	}
-
 	/**
+	 * Initialize the base, including the algorithm name variable.
 	 * 
-	*/
+	 * @param pts - input array of points
+	 * @param algo - the algorithm name
+	 * @throws IllegalArgumentException if pts == null or pts.length == 0
+	 */
 	protected AbstractSorter(Point[] pts, String algo) throws IllegalArgumentException {
 		this(pts);
 		this.algorithm = algo;
 	}
-	
-	
-	
+
+
+	/**
+	 * Conduct sorting on the internal array of points. Implemented by child classes.
+	 */
+	public abstract void sort();
 
 	/**
 	 * Generates a comparator on the fly that compares by x-coordinate if order == 0, by y-coordinate
-	 * if order == 1. Assign the 
-     * comparator to the variable pointComparator.
-     *  
+	 * if order == 1. Assign the comparator to the variable pointComparator.
 	 * 
-	 * @param order  0   by x-coordinate
-	 * 				 1   by y-coordinate
-	 * 			    
-	 * 
+	 * @param order - 0: by x-coordinate OR 1: by y-coordinate
 	 * @throws IllegalArgumentException if order is less than 0 or greater than 1
-	 *        
 	 */
 	public void setComparator(int order) throws IllegalArgumentException {
 		if(order <= 1 && order >= 0) {
-			this.pointComparator = (order == 0) ? Point::compareXY : Point::compareYX;
+			final boolean x = (order == 0);
+			Point.setXorY(x);
+			this.pointComparator = x ? Point::compareXY : Point::compareYX;
 		} else {
 			throw new IllegalArgumentException("Order must be 1 or 0");
 		}
 	}
 
-	
-
 	/**
-	 * Use the created pointComparator to conduct sorting.  
+	 * Obtain the point in the array points[] that has median index
 	 * 
-	 * Should be protected. Made public for testing. 
-	 */
-	public abstract void sort();
-	
-	
-	/**
-	 * Obtain the point in the array points[] that has median index 
-	 * 
-	 * @return	median point 
+	 * @return the median valued point
 	 */
 	public Point getMedian() {
 		return points[(points.length - 1) / 2];
 	}
-	
-	
 	/**
-	 * Copys the array points[] onto the array pts[]. 
+	 * Copys the array points[] onto the array pts[].
 	 * 
-	 * @param pts
+	 * @param pts - an array of points with length >= that of the internal array's length
 	 */
 	public void getPoints(Point[] pts) {
 		if(pts != null) {
@@ -116,13 +92,12 @@ public abstract class AbstractSorter
 			}
 		}
 	}
-	
 
 	/**
 	 * Swaps the two elements indexed at i and j respectively in the array points[].
 	 * 
-	 * @param i
-	 * @param j
+	 * @param i - the index of the first element to be swapped
+	 * @param j - the index of the second element to be swapped
 	 */
 	protected void swap(int i, int j) {
 		final Point _i = this.points[i];
@@ -131,6 +106,11 @@ public abstract class AbstractSorter
 	}
 
 
+	/**
+	 * Get the name of the underlying algorithm.
+	 * 
+	 * @return the algorithm name
+	 */
 	@Override
 	public String toString() {
 		return this.algorithm;

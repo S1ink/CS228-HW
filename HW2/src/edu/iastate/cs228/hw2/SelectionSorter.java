@@ -1,33 +1,27 @@
 package edu.iastate.cs228.hw2;
 
-import java.io.FileNotFoundException;
-import java.lang.NumberFormatException; 
 import java.lang.IllegalArgumentException;
-import java.util.Comparator;
+import java.lang.NumberFormatException;
 import java.util.InputMismatchException;
+import java.util.Comparator;
+import java.io.FileNotFoundException;
 
 
 /**
- *  
- * @author
- *
+ * @author Sam Richter
  */
 
 /**
- * 
- * This class implements selection sort.   
- *
+ * This class extends the AbstractSorter interface and represents the selection sort algorithm.
  */
-
 public class SelectionSorter extends AbstractSorter {
 
-	// Other private instance variables if you need ... 
-	
+
 	/**
-	 * Constructor takes an array of points.  It invokes the superclass constructor, and also 
+	 * Constructor takes an array of points. It invokes the superclass constructor, and also 
 	 * set the instance variables algorithm in the superclass.
-	 *  
-	 * @param pts  
+	 * 
+	 * @param pts - input array of points
 	 */
 	public SelectionSorter(Point[] pts) throws IllegalArgumentException {
 		super(pts, "SelectionSort");
@@ -35,12 +29,11 @@ public class SelectionSorter extends AbstractSorter {
 
 
 	/** 
-	 * Apply selection sort on the array points[] of the parent class AbstractSorter.  
-	 * 
+	 * Apply selection sort on the array points[] of the parent class AbstractSorter.
 	 */
-	@Override 
+	@Override
 	public void sort() {
-		Sorting.selectionSort(super.points, super.pointComparator);
+		Sorting.selectionSort(super.points);
 	}
 
 

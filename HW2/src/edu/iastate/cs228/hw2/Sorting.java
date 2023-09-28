@@ -4,17 +4,72 @@ import java.util.Comparator;
 
 
 /**
- * A collection of genericly typed and variable comparator array sorting algorithms
+ * @author Sam Richter
+ */
+
+/**
+ * A container class for generically typed sorting algorithms and other helpers.
  */
 public final class Sorting {
 
 	/**
-	 * 
-	 * @param <T>
-	 * @param arr
-	 * @param comp
+	 * Any sorting function that sorts using a generically typed comparator.
 	 */
-	public static <T> void selectionSort(T[] arr, Comparator<T> comp) {
+	public static interface Sorter<T> {
+		public void sort(T[] arr, Comparator<? super T> comp);
+	}
+	/**
+	 * Any sorting fuction that sorts comparable types.
+	 */
+	public static interface ComparableSorter<T extends Comparable<? super T>> {
+		public void sort(T[] arr);
+	}
+
+	/**
+	 * Get a sorting function (typed as a {@link Sorter}) for the supplied algorithm enumeration
+	 * 
+	 * @param <T> - the type for which the sorter sorts
+	 * @param a - the algorithm enumeration determining the returned function
+	 * @return - the sorter function
+	 */
+	public static <T> Sorter<T> getSorter(Algorithm a) {
+		switch(a) {
+			case SelectionSort: return Sorting::selectionSort;
+			case InsertionSort: return Sorting::insertionSort;
+			case MergeSort: return Sorting::mergeSort;
+			case QuickSort: return Sorting::quickSort;
+			default: return null;
+		}
+	}
+	/**
+	 * Get a sorting function (typed as a {@link ComarableSorter}) for the supplied algorithm enumeration
+	 * 
+	 * @param <T> - the type for which the sorter sorts - must be comparable
+	 * @param a - the algorithm enumeration determining the returned function
+	 * @return - the sorter function
+	 */
+	public static <T extends Comparable<? super T>> ComparableSorter<T> getComparableSorter(Algorithm a) {
+		switch(a) {
+			case SelectionSort: return Sorting::selectionSort;
+			case InsertionSort: return Sorting::insertionSort;
+			case MergeSort: return Sorting::mergeSort;
+			case QuickSort: return Sorting::quickSort;
+			default: return null;
+		}
+	}
+
+
+
+
+
+	/**
+	 * Selection sort implemented for use with a generically typed comparator.
+	 * 
+	 * @param <T> - the type being sorted
+	 * @param arr - the array to sort
+	 * @param comp - the comparator
+	 */
+	public static <T> void selectionSort(T[] arr, Comparator<? super T> comp) {
 
 		for(int i = 0; i < arr.length - 1; i++) {
 
@@ -33,14 +88,28 @@ public final class Sorting {
 		}
 
 	}
+	/**
+	 * Selection sort (wrapper) for use with comparable types
+	 * 
+	 * @param <T> - the comparable type being sorted
+	 * @param arr - the array to sort
+	 */
+	public static <T extends Comparable<? super T>> void selectionSort(T[] arr) {
+		selectionSort(arr, (T a, T b)->a.compareTo(b));
+	}
+
+
+
+
 
 	/**
+	 * Insertion sort implemented for use with a generically typed comparator.
 	 * 
-	 * @param <T>
-	 * @param arr
-	 * @param comp
+	 * @param <T> - the type being sorted
+	 * @param arr - the array to sort
+	 * @param comp - the comparator
 	 */
-	public static <T> void insertionSort(T[] arr, Comparator<T> comp) {
+	public static <T> void insertionSort(T[] arr, Comparator<? super T> comp) {
 
 		for(int i = 1; i < arr.length; i++) {
 
@@ -55,25 +124,47 @@ public final class Sorting {
 		}
 
 	}
+	/**
+	 * Insertion sort (wrapper) for use with comparable types
+	 * 
+	 * @param <T> - the comparable type being sorted
+	 * @param arr - the array to sort
+	 */
+	public static <T extends Comparable<? super T>> void insertionSort(T[] arr) {
+		insertionSort(arr, (T a, T b)->a.compareTo(b));
+	}
+
+
+
+
 
 	/**
+	 * Merge sort implemented for use with a generically typed comparator.
 	 * 
-	 * @param <T>
-	 * @param arr
-	 * @param comp
+	 * @param <T> - the type being sorted
+	 * @param arr - the array to sort
+	 * @param comp - the comparator
 	 */
-	public static <T> void mergeSort(T[] arr, Comparator<T> comp) {
-
+	public static <T> void mergeSort(T[] arr, Comparator<? super T> comp) {
 		mergeSort(ArrayView.window(arr), comp);
-
 	}
 	/**
+	 * Merge sort (wrapper) for use with comparable types
 	 * 
-	 * @param <T>
-	 * @param arr
-	 * @param comp
+	 * @param <T> - the comparable type being sorted
+	 * @param arr - the array to sort
 	 */
-	public static <T> void mergeSort(ArrayView<T> arr, Comparator<T> comp) {
+	public static <T extends Comparable<? super T>> void mergeSort(T[] arr) {
+		mergeSort(arr, (T a, T b)->a.compareTo(b));
+	}
+	/**
+	 * Merge sort recursive implementation using an array view of the data being sorted
+	 * 
+	 * @param <T> - the type being sorted
+	 * @param arr - the array view of the data to sort
+	 * @param comp - the comparator
+	 */
+	public static <T> void mergeSort(ArrayView<T> arr, Comparator<? super T> comp) {
 
 		final int
 			len = arr.size(),
@@ -94,6 +185,7 @@ public final class Sorting {
 		mergeSort(arr.endAt(split), comp);
 		mergeSort(arr.startingAt(split + 1), comp);
 
+		// merge
 		final Object[] tmp = new Object[len];
 
 		int s1 = 0, s2 = split + 1, ptr = 0;
@@ -125,7 +217,7 @@ public final class Sorting {
 			arr.set(i, (T)tmp[i]);
 		}
 
-		// merge
+		// merge - attempted inline implementation
 		// {
 		// 	int ptr = 0,
 		// 		s1 = ptr,
@@ -164,12 +256,37 @@ public final class Sorting {
 
 	}
 
-	public static <T> void quickSort(T[] arr, Comparator<T> comp) {
 
+
+
+
+	/**
+	 * Quick sort implemented for use with a generically typed comparator.
+	 * 
+	 * @param <T> - the type being sorted
+	 * @param arr - the array to sort
+	 * @param comp - the comparator
+	 */
+	public static <T> void quickSort(T[] arr, Comparator<? super T> comp) {
 		quickSort(ArrayView.window(arr), comp);
-
 	}
-	public static <T> void quickSort(ArrayView<T> arr, Comparator<T> comp) {
+	/**
+	 * Quick sort (wrapper) for use with comparable types
+	 * 
+	 * @param <T> - the comparable type being sorted
+	 * @param arr - the array to sort
+	 */
+	public static <T extends Comparable<? super T>> void quickSort(T[] arr) {
+		quickSort(arr, (T a, T b)->a.compareTo(b));
+	}
+	/**
+	 * Quick sort recursive implementation using an array view of the data being sorted
+	 * 
+	 * @param <T> - the type being sorted
+	 * @param arr - the array to sort
+	 * @param comp - the comparator
+	 */
+	public static <T> void quickSort(ArrayView<T> arr, Comparator<? super T> comp) {
 
 		if(arr.size() <= 1) {
 			return;

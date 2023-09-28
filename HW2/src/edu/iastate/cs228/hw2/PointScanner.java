@@ -1,27 +1,25 @@
 package edu.iastate.cs228.hw2;
 
-/**
- * 
- * @author 
- *
- */
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.util.InputMismatchException;
+import java.util.ArrayList;
+import java.util.Scanner;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 
 /**
+ * @author Sam Richter
+ */
+
+/**
  * This class sorts all the points in an array of 2D points to determine a reference point whose x and y 
- * coordinates are respectively the medians of the x and y coordinates of the original points. 
+ * coordinates are respectively the medians of the x and y coordinates of the original points.
  * 
- * It records the employed sorting algorithm as well as the sorting time for comparison. 
+ * It records the employed sorting algorithm as well as the sorting time for comparison.
  */
 public class PointScanner {
 

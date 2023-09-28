@@ -1,78 +1,60 @@
 package edu.iastate.cs228.hw2;
 
-import java.io.FileNotFoundException;
-import java.lang.NumberFormatException; 
-import java.lang.IllegalArgumentException; 
+import java.lang.IllegalArgumentException;
+import java.lang.NumberFormatException;
 import java.util.InputMismatchException;
+import java.io.FileNotFoundException;
 
 
 /**
- *  
- * @author
- *
+ * @author Sam Richter
  */
 
 /**
- * 
- * This class implements the version of the quicksort algorithm presented in the lecture.   
- *
+ * This class extends the AbstractSorter interface and represnts the quick sort algorithm.
  */
-
 public class QuickSorter extends AbstractSorter {
-	
-	// Other private instance variables if you need ... 
-		
-	/** 
-	 * Constructor takes an array of points.  It invokes the superclass constructor, and also 
+
+
+	/**
+	 * Constructor takes an array of points. It invokes the superclass constructor, and also 
 	 * set the instance variables algorithm in the superclass.
-	 *   
-	 * @param pts   input array of integers
+	 * 
+	 * @param pts - input array of points
 	 */
 	public QuickSorter(Point[] pts) throws IllegalArgumentException	{
 		super(pts, "QuickSort    ");
 	}
-		
+
 
 	/**
-	 * Carry out quicksort on the array points[] of the AbstractSorter class.  
-	 * 
+	 * Carry out quicksort on the points[] array in the AbstractSorter superclass.
 	 */
-	@Override 
+	@Override
 	public void sort() {
-		Sorting.quickSort(super.points, super.pointComparator);
+		Sorting.quickSort(super.points);
 	}
-	
-	
-	/**
-	 * Operates on the subarray of points[] with indices between first and last. 
-	 * 
-	 * @param first  starting index of the subarray
-	 * @param last   ending index of the subarray
-	 */
-	private void quickSortRec(int first, int last) {
 
-		
+	// /**
+	//  * Operates on the subarray of points[] with indices between first and last.
+	//  * 
+	//  * @param first - starting index of the subarray
+	//  * @param last - ending index of the subarray
+	//  */
+	// private void quickSortRec(int first, int last) {
+	// 	Sorting.quickSort(ArrayView.range(super.points, first, last), super.pointComparator);
+	// }
 
-	}
-	
-	
-	/**
-	 * Operates on the subarray of points[] with indices between first and last.
-	 * 
-	 * @param first
-	 * @param last
-	 * @return
-	 */
-	private int partition(int first, int last)
-	{
-		// TODO 
-		return 0; 
-	}	
-		
-
-
-	
-	// Other private methods if needed ...
+	// /**
+	//  * Operates on the subarray of points[] with indices between first and last.
+	//  * 
+	//  * @param first
+	//  * @param last
+	//  * @return
+	//  */
+	// private int partition(int first, int last) {
+	// 	return 0;
+	// }
 
 
 }

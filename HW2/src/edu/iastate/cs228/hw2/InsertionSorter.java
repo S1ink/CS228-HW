@@ -1,33 +1,27 @@
 package edu.iastate.cs228.hw2;
 
-import java.io.FileNotFoundException;
-import java.lang.NumberFormatException; 
 import java.lang.IllegalArgumentException;
-import java.util.Comparator;
+import java.lang.NumberFormatException;
 import java.util.InputMismatchException;
+import java.util.Comparator;
+import java.io.FileNotFoundException;
 
 
 /**
- *  
- * @author
- *
+ * @author Sam Richter
  */
 
 /**
- * 
- * This class implements insertion sort.   
- *
+ * This class extends the AbstractSorter interface and represents the insertion sort algorithm.
  */
-
 public class InsertionSorter extends AbstractSorter {
 
-	// Other private instance variables if you need ... 
 
 	/**
-	 * Constructor takes an array of points.  It invokes the superclass constructor, and also 
+	 * Constructor takes an array of points. It invokes the superclass constructor, and also 
 	 * set the instance variables algorithm in the superclass.
 	 * 
-	 * @param pts 
+	 * @param pts - input array of points
 	 */
 	public InsertionSorter(Point[] pts) throws IllegalArgumentException {
 		super(pts, "InsertionSort");
@@ -35,11 +29,11 @@ public class InsertionSorter extends AbstractSorter {
 
 
 	/** 
-	 * Perform insertion sort on the array points[] of the parent class AbstractSorter.  
+	 * Perform insertion sort on the array points[] of the parent class AbstractSorter.
 	 */
 	@Override 
 	public void sort() {
-		Sorting.insertionSort(super.points, super.pointComparator);
+		Sorting.insertionSort(super.points);
 	}
 
 
