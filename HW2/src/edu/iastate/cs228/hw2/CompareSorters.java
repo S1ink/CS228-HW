@@ -2,6 +2,8 @@ package edu.iastate.cs228.hw2;
 
 import java.io.File;
 
+//import java.io.File;
+
 /**
  *  
  * @author
@@ -29,21 +31,6 @@ import java.util.Random;
 
 public class CompareSorters {
 
-	private static String iterate(Point[] dataset) {
-		final Algorithm[] algos = Algorithm.values();
-		final PointScanner[] scanners = new PointScanner[algos.length];
-		for(int i = 0; i < scanners.length; i++) {
-			try{
-				scanners[i] = new PointScanner(dataset, algos[i]);
-				scanners[i].scan();
-			} catch(IllegalArgumentException e) {
-
-			}
-		}
-		
-
-	}
-
 	/**
 	 * Repeatedly take integer sequences either randomly generated or read from files. 
 	 * Use them as coordinates to construct points.  Scan these points with respect to their 
@@ -53,6 +40,7 @@ public class CompareSorters {
 	 **/
 	public static void main(String[] args) throws FileNotFoundException
 	{
+		
 		// TODO 
 		// 
 		// Conducts multiple rounds of comparison of four sorting algorithms.  Within each round, 
@@ -64,10 +52,7 @@ public class CompareSorters {
 		//    b) Reassigns to the array scanners[] (declared below) the references to four new 
 		//       PointScanner objects, which are created using four different values  
 		//       of the Algorithm type:  SelectionSort, InsertionSort, MergeSort and QuickSort. 
-		// 
-		// 	
-		PointScanner[] scanners = new PointScanner[4];
-		
+		// 		
 		// For each input of points, do the following. 
 		// 
 		//     a) Initialize the array scanners[].  
@@ -80,87 +65,62 @@ public class CompareSorters {
 		//
 		// A sample scenario is given in Section 2 of the project description. 
 
+		final Scanner s = new Scanner(System.in);
+		final Random r = new Random();
+		for(int t = 1;; t++) {
 
-		// String output = "";
-		// for(int i = 0; i < scanners.length; i++) {
-		// 	try {
-		// 		scanners[i] = new PointScanner(pts, Algorithm.values()[i]);
-		// 	} catch (IllegalArgumentException e) {}
-		// 	scanners[i].scan();
-		// 	output += scanners[i].stats();
-		// }
-		
-		
-//		final String fname = "test.txt";
-//		Point[] arr = null;
-//		try {
-//			arr = PointScanner.deserializePoints(new File(fname));
-//			System.out.println("Parsed Points:\n" + Point.formatArray(arr));
-//		} catch(Exception e) {
-//			System.out.println("Serialization failed: " + e.getMessage());
-//		}
+			System.out.print("Options: 1) Random generation, 2) Load from file, 3) Exit\n-->");
+			int op = 0;
+			Point[] dataset = null;
+			try{
+				op = s.nextInt();
+				s.nextLine();
+			} catch(Exception e) {
+				System.out.println(e.getClass());
+				s.nextLine();
+//				continue;
+			}
+			switch(op) {
+				case 1: {
+					System.out.print("Enter the number of points to generate:\n-->");
+					try {
+						final int num = s.nextInt();
+						dataset = generateRandomPoints(num, r);
+					} catch(Exception e) {
+						System.out.println(e.getClass());
+					}
+					break;
+				}
+				case 2: {
+					System.out.print("Enter the file path to load:\n-->");
+					try {
+						final String fname = s.nextLine();
+						dataset = PointScanner.deserializePoints(new File(fname));
+					} catch(Exception e) {
+						System.out.println(e.getClass());
+					}
+					break;
+				}
+				case 3: {
+					s.close();
+					return;
+				}
+				default: {
+					System.out.println("Invalid operation code.");
+					continue;
+				}
+			}
+			if(dataset != null) {
+				System.out.println(String.format("\nTrial %s:", t));
+				final String[] stats = iterate(dataset);
+				System.out.println(formatStats(stats));
+				System.out.println("\n");
+			} else {
+				System.out.println("Sorting failed due to a dataset error.");
+			}
 
-		final Integer[]
-			vals1 = new Integer[1000],
-			vals2 = new Integer[1000],
-			vals3 = new Integer[1000],
-			vals4 = new Integer[1000];
-		Random rand = new Random();
-		for(int i = 0; i < 1000; i++) {
-			vals1[i] = vals2[i] = vals3[i] = vals4[i] = rand.nextInt(100);
 		}
-		
-		// final Integer[] vals1 = new Integer[]{0, 0, 98, 8, 4, 2, -937, 3, 2, 2, 4, 6, -10001};
-		// final Integer[] vals2 = new Integer[]{0, 0, 98, 8, 4, 2, -937, 3, 2, 2, 4, 6, -10001};
-		// final Integer[] vals3 = new Integer[]{0, 0, 98, 8, 4, 2, -937, 3, 2, 2, 4, 6, -10001};
-		// final Integer[] vals4 = new Integer[]{0, 0, 98, 8, 4, 2, -937, 3, 2, 2, 4, 6, -10001};
-//		MergeSorter.mergeSort(vals, (Integer a, Integer b)->{ return b - a; });
-		// for(Integer v : vals1) {
-		// 	System.out.println(v);
-		// }
-		final Comparator<Integer> comp = (Integer a, Integer b)->{ return a - b; };
-		final long a = System.nanoTime();
-		Sorting.insertionSort(vals1, comp);
-		final long b = System.nanoTime();
-		Sorting.selectionSort(vals2, comp);
-		final long c = System.nanoTime();
-		Sorting.mergeSort(vals3, comp);
-		final long d = System.nanoTime();
-		Sorting.quickSort(vals4, comp);
-		final long e = System.nanoTime();
-		
-		System.out.println(String.format(
-			"Insertion Sort:\t%d\n"+
-			"Selection Sort:\t%d\n"+
-			"Merge Sort:\t\t%d\n"+
-			"Quick Sort:\t\t%d\n",
-			(b - a), (c - b), (d - c), (e - d)
-		));
-		
-		try {
-			Files.write( // write to file
-				Paths.get("debug.txt"), // get path from file
-				Collections.singleton(Arrays.toString(vals3)), // transform array to collection using singleton
-				Charset.forName("UTF-8") // formatting
-			);
-		} catch(Exception ex) {}
-		
-		// System.out.println("-------------");
-		// for(Integer v : vals1) {
-		// 	System.out.println(v);
-		// }
-		// System.out.println("-------------");
-		// for(Integer v : vals2) {
-		// 	System.out.println(v);
-		// }
-		// System.out.println("-------------");
-		// for(Integer v : vals3) {
-		// 	System.out.println(v);
-		// }
-		// System.out.println("-------------");
-		// for(Integer v : vals4) {
-		// 	System.out.println(v);
-		// }
+//		s.close();
 		
 	}
 	
@@ -188,4 +148,48 @@ public class CompareSorters {
 		return arr;
 	}
 	
+	private static String[] iterate(Point[] dataset) {
+		final Algorithm[] algos = Algorithm.values();
+		final PointScanner[] scanners = new PointScanner[algos.length];
+		final String[] outputs = new String[algos.length];
+		for(int i = 0; i < scanners.length; i++) {
+			try{
+				scanners[i] = new PointScanner(dataset, algos[i]);
+				scanners[i].scan();
+				outputs[i] = scanners[i].stats();
+			} catch(IllegalArgumentException e) {
+
+			}
+		}
+		return outputs;
+	}
+
+	public static String formatStats(String[] stats) {
+
+		final String[][] components = new String[stats.length][];
+		int max_desc = 9, max_size = 4, max_time = 9;
+		for(int i = 0; i < stats.length; i++) {
+			components[i] = stats[i].split("\t", 3);
+			final int
+				desc = components[i][0].length(),
+				size = components[i][1].length(),
+				time = components[i][2].length();
+			if(desc > max_desc) { max_desc = desc; }
+			if(size > max_size) { max_size = size; }
+			if(time > max_time) { max_time = time; }
+		}
+		String line = "\n";
+		for(int i = 0; i < (max_desc + max_size + max_time + 6); i++) {
+			line += "-";
+		}
+		String ret = String.format("%-" + max_desc + "s\t%-" + max_size + "s\t%s", "Algorithm", "Size", "Time (ns)");
+		ret += line;
+		for(String[] s : components) {
+			ret += String.format("\n%-" + max_desc + "s\t%-" + max_size + "s\t%s", s[0], s[1], s[2]);
+		}
+		return ret + line;
+
+	}
+
+
 }
