@@ -217,7 +217,7 @@ public final class Sorting {
 			arr.set(i, (T)tmp[i]);
 		}
 
-		// merge - attempted inline implementation
+		// merge - attempted in-place implementation
 		// {
 		// 	int ptr = 0,
 		// 		s1 = ptr,

@@ -1,9 +1,6 @@
 package edu.iastate.cs228.hw2;
 
 import java.lang.IllegalArgumentException;
-import java.lang.NumberFormatException;
-import java.util.InputMismatchException;
-import java.io.FileNotFoundException;
 
 
 /**

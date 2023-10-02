@@ -23,10 +23,9 @@ import java.io.File;
 public class PointScanner {
 
 	private Point[] points;
-	private Point medianCoordinatePoint;	// point whose x and y coordinates are respectively the medians of 
-											// the x coordinates and y coordinates of those points in the array points[].
+	private Point medianCoordinatePoint = new Point();
 	private Algorithm sortingAlgorithm;
-	private String algo_name;
+	private String algo_name = "N/A";
 
 	protected long scanTime;				// execution time in nanoseconds.
 
@@ -36,6 +35,7 @@ public class PointScanner {
 	 * the points into the array points[].
 	 * 
 	 * @param pts - input array of points
+	 * @param algo - the algorithm to initialize when sorting
 	 * @throws IllegalArgumentException if pts == null or pts.length == 0.
 	 */
 	public PointScanner(Point[] pts, Algorithm algo)
@@ -49,9 +49,10 @@ public class PointScanner {
 	}
 
 	/**
-	 * This constructor reads points from a file. 
+	 * This constructor reads points from a file.
 	 * 
-	 * @param  inputFileName
+	 * @param inputFileName - the file name from which to load points
+	 * @param algo - the algorithm to initialize when sorting
 	 * @throws FileNotFoundException 
 	 * @throws InputMismatchException   if the input file contains an odd number of integers
 	 */
@@ -72,62 +73,62 @@ public class PointScanner {
 	 *  
 	 * Based on the value of sortingAlgorithm, create an object of SelectionSorter, InsertionSorter, MergeSorter,
 	 * or QuickSorter to carry out sorting.
-	 * 
-	 * @param algo
-	 * @return
 	 */
 	public void scan() {
 
 		AbstractSorter sorter = genSorter(this.sortingAlgorithm, this.points);
 		this.algo_name = sorter.toString();
 		try{
+			// sort with x-primary
 			sorter.setComparator(0);
 			final long a = System.nanoTime();
 			sorter.sort();
 			final long b = System.nanoTime();
 			final int x = sorter.getMedian().getX();
+			// sort with y-primary
 			sorter.setComparator(1);
 			final long c = System.nanoTime();
 			sorter.sort();
 			final long d = System.nanoTime();
 			final int y = sorter.getMedian().getY();
+			// combine
 			this.medianCoordinatePoint = new Point(x, y);
 			this.scanTime = (b - a) + (d - c);
-		} catch(IllegalArgumentException e) {}
+		} catch(IllegalArgumentException e) {
+			// won't ever happen with current usage
+		}
 
 	}
 
 	/**
-	 * Outputs performance statistics in the format:
+	 * Get performance statistics in the format: <sorting algorithm>\t<size>\t<time>
 	 * 
-	 * <sorting algorithm> <size>  <time>
-	 * 
-	 * For instance, 
-	 * 
-	 * selection sort   1000	  9200867
-	 * 
-	 * Use the spacing in the sample run in Section 2 of the project description.
+	 * @return the statistics in a formatted string
 	 */
 	public String stats() {
 		return String.format("%s\t%d\t%d", this.algo_name, this.points.length, this.scanTime);
 	}
-
 	/**
 	 * This method, called after scanning, writes point data into a file by outputFileName. The format 
 	 * of data in the file is the same as printed out from toString(). The file can help you verify 
-	 * the full correctness of a sorting result and debug the underlying algorithm. 
+	 * the full correctness of a sorting result and debug the underlying algorithm.
 	 * 
+	 * @param outputFileName - the file path to write the MCP
 	 * @throws FileNotFoundException
 	 */
 	public void writeMCPToFile(String outputFileName) throws FileNotFoundException {
 		try {
 			Files.write(Paths.get(outputFileName), this.toString().getBytes());
-		} catch(IOException e) {}
+		} catch(IOException e) {
+			throw new FileNotFoundException("Could not find file: " + outputFileName);
+		}
 	}
 
 	/**
 	 * Write MCP after a call to scan(), in the format "MCP: (x, y)" The x and y coordinates of the point are displayed on the same line with exactly one blank space
 	 * in between.
+	 * 
+	 * @return the formatted MCP string
 	 */
 	@Override
 	public String toString() {
@@ -137,6 +138,14 @@ public class PointScanner {
 
 
 
+
+	/**
+	 * Generate a sorting instance based on the enumeration value provided.
+	 * 
+	 * @param a - the algorithm enumeration
+	 * @param pts - the points that will be sorted
+	 * @return an AbstractSorter referencing the created algorithm instance
+	 */
 	private static AbstractSorter genSorter(Algorithm a, Point[] pts) {
 		switch(a) {
 			case SelectionSort:	return new SelectionSorter(pts);
@@ -146,20 +155,30 @@ public class PointScanner {
 			default:			return null;
 		}
 	}
-
+	/**
+	 * Deserialize points from the provided file.
+	 * 
+	 * @param f - file to load points from
+	 * @return a Points[] containing the points read from file - may be of size 0 if a failure occurred
+	 * @throws FileNotFoundException when the file cannot be found
+	 * @throws InputMismatchException when the number of raw data points is odd
+	 */
 	public static Point[] deserializePoints(File f) throws FileNotFoundException, InputMismatchException {
 		final ArrayList<Integer> buff = new ArrayList<>();
 		final Scanner s = new Scanner(f);
 		try {
+			// keep reading numbers until no more are left
 			while(s.hasNextInt()) {
 				buff.add(s.nextInt());
 			}
 		} catch(Exception e) {} finally {
 			s.close();
 		}
+		// odd number of parsed numbers
 		if(buff.size() % 2 > 0) {
 			throw new InputMismatchException("Invalid number of data points!");
 		}
+		// create points using parsed data
 		final Point[] ret = new Point[buff.size() / 2];
 		for(int i = 0; i < ret.length; i++) {
 			ret[i] = new Point(
