@@ -283,8 +283,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 	 */
 	@Override
 	public Iterator<E> iterator() {
-		// return new StoutListIterator();
-		return null;
+		return new StoutListIterator();
 	}
 	/**
 	 * Get a bi-directional iterator for the list which starts at the first element.
@@ -293,8 +292,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 	 */
 	@Override
 	public ListIterator<E> listIterator() {
-		// return new StoutListIterator();
-		return null;
+		return new StoutListIterator();
 	}
 	/**
 	 * Get a bi-directional iterator for the list, starting at the provided index.
@@ -306,8 +304,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 	 */
 	@Override
 	public ListIterator<E> listIterator(int index) throws IndexOutOfBoundsException {
-		// return new StoutListIterator(index);
-		return null;
+		return new StoutListIterator(index);
 	}
 
 
@@ -429,6 +426,11 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		public E get(int i) {
 			return (i >= 0 && i < this.size) ? this.data[i] : null;
 		}
+		public void set(int i, E e) {
+			if(i >= 0 && i < this.size) {
+				this.data[i] = e;
+			}
+		}
 
 		/**
 		 * Adds an item to this node at the first available offset.
@@ -487,95 +489,196 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 	/**
 	 * 
 	 */
-	// private class StoutListIterator implements ListIterator<E> {
+	private class StoutListIterator implements ListIterator<E> {
 
-	// 	/**
-	// 	 * Default constructor
-	// 	 */
-	// 	public StoutListIterator() {}
-	// 	/**
-	// 	 * Construct an iterator that starts at the given position in the list
-	// 	 * 
-	// 	 * @param pos - the starting position
-	// 	 * @throws IndexOutOfBoundsException if the starting index is beyond the list's range
-	// 	 */
-	// 	public StoutListIterator(int pos) throws IndexOutOfBoundsException {}
+		private final StoutList<E> list = StoutList.this;
+		private Node container;
+		private int
+			recent,
+			relative,
+			absolute;
 
 
-
-	// 	/**
-	// 	 * Returns true if there are more accessible elements in the FORWARD direction.
-	// 	 * 
-	// 	 * @return true if there are more elements
-	// 	 */
-	// 	@Override
-	// 	public boolean hasNext() {}
-	// 	/**
-	// 	 * Get the next element in the FORWARD direction.
-	// 	 * 
-	// 	 * @return the next element
-	// 	 * @throws NoSuchElementException if there is no next element in the list
-	// 	 */
-	// 	@Override
-	// 	public E next() throws NoSuchElementException {}
-	// 	/**
-	// 	 * Returns true if there are more accessible elements in the BACKWARD direction.
-	// 	 * 
-	// 	 * @return true if there are more elements
-	// 	 */
-	// 	@Override
-	// 	public boolean hasPrevious() {}
-	// 	/**
-	// 	 * Get the next element in the BACKWARD direction.
-	// 	 * 
-	// 	 * @return the next element
-	// 	 * @throws NoSuchElementException if there is not previous element in the list
-	// 	 */
-	// 	@Override
-	// 	public E previous() throws NoSuchElementException {}
-	// 	/**
-	// 	 * Get the index of the next element in the FORWARD direction.
-	// 	 * 
-	// 	 * @return an integer index for the next element
-	// 	 */
-	// 	@Override
-	// 	public int nextIndex() {}
-	// 	/**
-	// 	 * Get the index of the next element in the BACKWARD direction.
-	// 	 * 
-	// 	 * @return an integer index for the next element
-	// 	 */
-	// 	@Override
-	// 	public int previousIndex() {}
-	// 	/**
-	// 	 * Removes the element from the list that was most recently accessed.
-	// 	 * 
-	// 	 * @throws IllegalStateException if the previous accessed element no longer is valid
-	// 	 */
-	// 	@Override
-	// 	public void remove() throws IllegalStateException {}
-	// 	/**
-	// 	 * Replaces the element from the list that was most recently accessed.
-	// 	 * 
-	// 	 * @param e the element for replacing
-	// 	 * @throws ClassCastException if the element being added is of the wrong class
-	// 	 * @throws IllegalArgumentException if the element being added is invalid
-	// 	 * @throws IllegalStateException if the previously accessed element no longer is valid
-	// 	 */
-	// 	@Override
-	// 	public void set(E e) throws ClassCastException, IllegalArgumentException, IllegalStateException {}
-	// 	/**
-	// 	 * Inserts an element into the list before the current iterator's position.
-	// 	 * 
-	// 	 * @param e the element to insert
-	// 	 * @throws ClassCastException if the element being added is of the wrong class
-	// 	 * @throws IllegalArugmentException if the element being added is invalid
-	// 	 */
-	// 	@Override
-	// 	public void add(E e) throws ClassCastException, IllegalArgumentException {}
+		private void increment() {
+			this.absolute++;
+			this.relative++;
+			if(this.relative >= this.container.size) {
+				this.container = this.container.next;
+				this.relative = 0;
+			}
+			this.recent = this.relative - 1;
+		}
+		private void decrement() {
+			this.absolute--;
+			this.relative--;
+			if(this.relative < 0) {
+				this.container = this.container.prev;
+				this.relative = this.container.size - 1;
+			}
+			this.recent = this.relative;
+		}
+		private void refresh() {
+			final ElemIndex ei = list.fromAbsolute(this.absolute);
+			this.container = ei.node;
+			this.relative = ei.idx;
+		}
 
 
-	// }
+		/**
+		 * Default constructor
+		 */
+		public StoutListIterator() {
+			this(0);
+		}
+		/**
+		 * Construct an iterator that starts at the given position in the list
+		 * 
+		 * @param pos - the starting position
+		 * @throws IndexOutOfBoundsException if the starting index is beyond the list's range
+		 */
+		public StoutListIterator(int pos) throws IndexOutOfBoundsException {
+			if(pos < 0 || pos > list.size) {
+				throw new IndexOutOfBoundsException();
+			}
+			this.absolute = pos;
+			this.refresh();
+		}
+
+
+
+		/**
+		 * Returns true if there are more accessible elements in the FORWARD direction.
+		 * 
+		 * @return true if there are more elements
+		 */
+		@Override
+		public boolean hasNext() {
+			return this.absolute < list.size;
+		}
+		/**
+		 * Get the next element in the FORWARD direction.
+		 * 
+		 * @return the next element
+		 * @throws NoSuchElementException if there is no next element in the list
+		 */
+		@Override
+		public E next() throws NoSuchElementException {
+			if(this.hasNext()) {
+				this.increment();
+				if(this.recent < 0) {
+					return this.container.prev.get(this.container.prev.size + this.recent);
+				}
+				return this.container.get(this.recent);
+			} else {
+				throw new NoSuchElementException();
+			}
+		}
+		/**
+		 * Returns true if there are more accessible elements in the BACKWARD direction.
+		 * 
+		 * @return true if there are more elements
+		 */
+		@Override
+		public boolean hasPrevious() {
+			return this.absolute > 0;
+		}
+		/**
+		 * Get the next element in the BACKWARD direction.
+		 * 
+		 * @return the next element
+		 * @throws NoSuchElementException if there is not previous element in the list
+		 */
+		@Override
+		public E previous() throws NoSuchElementException {
+			if(this.hasPrevious()) {
+				this.decrement();
+				return this.container.get(this.recent);
+			} else {
+				throw new NoSuchElementException();
+			}
+		}
+		/**
+		 * Get the index of the next element in the FORWARD direction.
+		 * 
+		 * @return an integer index for the next element
+		 */
+		@Override
+		public int nextIndex() {
+			return this.absolute;
+		}
+		/**
+		 * Get the index of the next element in the BACKWARD direction.
+		 * 
+		 * @return an integer index for the next element
+		 */
+		@Override
+		public int previousIndex() {
+			return this.absolute - 1;
+		}
+		/**
+		 * Removes the element from the list that was most recently accessed.
+		 * 
+		 * @throws IllegalStateException if the previous accessed element no longer is valid
+		 */
+		@Override
+		public void remove() throws IllegalStateException {
+			// if valid recent
+			if(this.recent <= this.relative) {
+				if(this.recent < this.relative) {
+					list.remove(this.absolute - 1);
+					this.absolute--;
+				} else {
+					list.remove(this.absolute);
+				}
+				this.refresh();
+				// invalidate recent
+				this.recent = this.relative + 1;
+			} else {
+				throw new IllegalStateException();
+			}
+		}
+		/**
+		 * Replaces the element from the list that was most recently accessed.
+		 * 
+		 * @param e the element for replacing
+		 * @throws ClassCastException if the element being added is of the wrong class
+		 * @throws IllegalArgumentException if the element being added is invalid
+		 * @throws IllegalStateException if the previously accessed element no longer is valid
+		 */
+		@Override
+		public void set(E e) throws IllegalArgumentException, IllegalStateException {
+			// check no add() or remove()
+			if(this.recent <= this.relative) {
+				if(this.recent < 0) {
+					this.container.prev.set(this.container.prev.size + this.recent, e);
+				} else {
+					this.container.set(this.recent, e);
+				}
+			} else {
+				throw new IllegalStateException();
+			}
+		}
+		/**
+		 * Inserts an element into the list before the current iterator's position.
+		 * 
+		 * @param e the element to insert
+		 * @throws ClassCastException if the element being added is of the wrong class
+		 * @throws IllegalArugmentException if the element being added is invalid
+		 */
+		@Override
+		public void add(E e) throws IllegalArgumentException {
+			// if valid recent
+			// if(this.recent <= this.relative) {
+				list.add(this.absolute, e);
+				this.absolute++;
+				this.refresh();
+				// invalidate recent
+				this.recent = this.relative + 1;
+			// }
+		}
+
+
+	}
 
 
 	/**
