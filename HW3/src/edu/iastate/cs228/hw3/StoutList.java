@@ -19,6 +19,14 @@ import java.util.Iterator;
  */
 public class StoutList<E extends Comparable<? super E>> extends AbstractSequentialList<E> {
 
+	/** Class code "map"
+	 * 1. StoutList vars/constructors
+	 * 2. StoutList public interface
+	 * 3. StoutList public helpers
+	 * 4. Helper classes
+	 * 5. Helper methods
+	 * 6. Helper methods -- sorting */
+
 	/** Default number of elements that may be stored in each node. */
 	private static final int DEFAULT_NODESIZE = 4;
 
@@ -71,6 +79,11 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		this.size = size;
 	}
 
+
+
+
+
+/** >>>>>>>>>> PUBLIC INTERFACE <<<<<<<<<<< */
 
 
 	/**
@@ -338,6 +351,8 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 
 	/**
 	 * Get the list's String representation
+	 * 
+	 * @return the string that represents the list
 	 */
 	@Override
 	public String toString() {
@@ -346,6 +361,104 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 
 
 
+
+
+/** >>>>>>>>>> PUBLIC HELPERS <<<<<<<<<<< */
+
+
+	/**
+	 * Condense the list such that all nodes' buffers are at maximum capacity (except possibly the last node).
+	 */
+	public void condense() {
+		Node n = this.head.next;
+		while(n != this.tail && n.next != this.tail) {
+			if(n.size == n.data.length) {
+				n = n.next;
+				continue;
+			}
+			final int
+				k = n.size,
+				k2 = n.next.size;
+			for(int i = 0; i < k2 && i + k < n.data.length; i++) {
+				n.data[i + k] = n.next.data[i];
+				n.size++;
+				n.next.size--;
+			}
+			if(n.next.size > 0) {
+				final int
+					gap = k2 - n.next.size,
+					k3 = n.next.data.length - gap;
+				for(int i = 0; i < k3; i++) {
+					n.next.data[i] = n.next.data[i + gap];
+					n.next.data[i + gap] = null;
+				}
+			} else {
+				this.removeN(n.next);
+			}
+			if(n.size >= n.data.length) {
+				n = n.next;
+			}
+		}
+	}
+	/**
+	 * Get an array of elements that is analogous to the internal list.
+	 * 
+	 * @return the array of elements
+	 */
+	public E[] toArray() {
+		final E[] arr = (E[]) new Comparable[this.size];
+		int i = 0;
+		for(Node n = this.head.next; n != this.tail; n = n.next) {
+			for(int k = 0; k < n.size; k++) {
+				arr[i] = n.data[k];
+				i++;
+			}
+		}
+		return arr;
+	}
+	/**
+	 * Create a new StoutList from an array of elements. Null values are skipped and leave voids in the list.
+	 * 
+	 * @param arr - the array of elements to translate
+	 * @param node_size - the size of each node within the list
+	 * @return the newly created StoutList instace with all the elements
+	 */
+	public static <E extends Comparable<? super E>> StoutList<E> fromArray(E[] arr, int node_size) {
+
+		if(arr == null) { return null; }
+		if(node_size < 1) { node_size = DEFAULT_NODESIZE; }
+
+		final StoutList<E> list = new StoutList<>(node_size);
+		final StoutList<E>.Node n1 = list.new Node();
+		StoutList<E>.Node n = n1;
+		int p = 0;
+		for(int i = 0; i < arr.length; i++) {
+			if(arr[i] != null) {
+				n.data[p] = arr[i];
+				list.size++;
+				n.size++;
+			}
+			p++;
+			if(p >= n.data.length && i < arr.length - 1) {
+				list.link(n, list.new Node());
+				n = n.next;
+				p = 0;
+			}
+		}
+		list.link(list.head, n1);
+		list.link(n, list.tail);
+		return list;
+
+	}
+
+
+
+
+
+
+
+
+/** >>>>>>>>>> PRIVATE HELPERS: Classes <<<<<<<<<<< */
 
 
 	/**
@@ -470,6 +583,8 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 
 
 
+
+
 	/**
 	 * Represents a location within the StoutList, holding a Node instance
 	 * and index within that node.
@@ -493,201 +608,54 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		public void set(E e) { node.set(idx, e); }
 
 	}
-	/**
-	 * Get the equivalent ElemIndex representation for a given absolute index.
-	 * 
-	 * @param absolute - the absolute index to convert
-	 * @return the ElemIndex representation
-	 */
-	private ElemIndex fromAbsolute(int absolute) {
-		return fromAbsolute(absolute, null);
-	}
-	/**
-	 * Get the equivalent ElemIndex represntation for a given absolute index.
-	 * This overload allows for buffer passing - a null param will generate a new ElemIndex.
-	 * 
-	 * @param absolute - the absolute index to convert
-	 * @param buff - the ElemIndex buffer to reuse
-	 * @return the ElemIndex representation for the given absolute index
-	 */
-	private ElemIndex fromAbsolute(int absolute, ElemIndex buff) {
-		if(absolute == this.size) {
-			if(buff == null) { buff = new ElemIndex(); }
-			buff.node = this.tail;
-			return buff;
-		}
-		if(absolute >= 0) {
-			Node n = this.head.next;
-			while(n != null) {
-				if(absolute < n.size || n == this.tail) {
-					if(buff == null) { buff = new ElemIndex(); }
-					buff.node = n;
-					buff.idx = absolute;
-					return buff;
-				}
-				absolute -= n.size;
-				n = n.next;
-			}
-		}
-		return null;
-	}
-	/**
-	 * Get the absolute index of a location represented by an ElemIndex.
-	 * 
-	 * @param ei - the ElemIndex to convert
-	 * @return the absolute index, or -1 if this index is no longer valid for the current list's state
-	 */
-	private int toAbsolute(ElemIndex ei) {
-		// static bindings for head/tail?
-		int i = 0;
-		Node n = this.head.next;
-		while(n != null && n != this.tail && n != ei.node) {
-			i += n.size;
-			n = n.next;
-		}
-		if(n == ei.node) {
-			return i + ei.idx;
-		} else {
-			return -1;	// input index not valid
-		}
-	}
+
+
+
+
 
 	/**
-	 * Link two Nodes. Use linkS() if the parameters' validity has not been determined yet.
-	 * 
-	 * @param a - the first node (comes before the second one in the list)
-	 * @param b - the second node (comes after the first on in the list)
+	 * Represents a view of a list of linked nodes.
 	 */
-	private void link(Node a, Node b) {
-		a.next = b;
-		b.prev = a;
-	}
-	/**
-	 * Link two Nodes w/ included nullptr safety.
-	 * 
-	 * @param a - the first node (comes before the second one in the list)
-	 * @param b - the second node (comes after the first on in the list)
-	 */
-	private void linkS(Node a, Node b) {
-		if(a != null) a.next = b;
-		if(b != null) b.prev = a;
-	}
-	/**
-	 * Append a newly created node after the provided node.
-	 * 
-	 * @param pre - the base node
-	 * @return the instance of the newly created node
-	 */
-	private Node insertN(Node pre) {
-		return this.insertN(pre, new Node());
-	}
-	/**
-	 * Insert a node after another node and resolve pre/post linking.
-	 * 
-	 * @param a - the base node
-	 * @param n - the node to append to the base
-	 * @return the instance of the newly inserted node
-	 */
-	private Node insertN(Node a, Node n) {
-		final Node b = a.next;
-		this.linkS(a, n);
-		this.linkS(n, b);
-		return n;
-	}
-	/**
-	 * Dissolve all external links pointing to the given node (such that it can be garbage collected).
-	 * 
-	 * @param n - the node to unlink
-	 * @return the instance of the node that was removed
-	 */
-	private Node removeN(Node n) {
-		this.linkS(n.prev, n.next);
-		return n;
-	}
-	/**
-	 * Condense the list such that all nodes' buffers are at maximum capacity (except possibly the last node).
-	 */
-	public void condense() {
-		Node n = this.head.next;
-		while(n != this.tail && n.next != this.tail) {
-			if(n.size == n.data.length) {
-				n = n.next;
-				continue;
-			}
-			final int
-				k = n.size,
-				k2 = n.next.size;
-			for(int i = 0; i < k2 && i + k < n.data.length; i++) {
-				n.data[i + k] = n.next.data[i];
-				n.size++;
-				n.next.size--;
-			}
-			if(n.next.size > 0) {
-				final int
-					gap = k2 - n.next.size,
-					k3 = n.next.data.length - gap;
-				for(int i = 0; i < k3; i++) {
-					n.next.data[i] = n.next.data[i + gap];
-					n.next.data[i + gap] = null;
-				}
-			} else {
-				this.removeN(n.next);
-			}
-			if(n.size >= n.data.length) {
-				n = n.next;
-			}
-		}
-	}
-	/**
-	 * Get an array of elements that is analogous to the internal list.
-	 * 
-	 * @return the array of elements
-	 */
-	public E[] toArray() {
-		final E[] arr = (E[]) new Comparable[this.size];
-		int i = 0;
-		for(Node n = this.head.next; n != this.tail; n = n.next) {
-			for(int k = 0; k < n.size; k++) {
-				arr[i] = n.data[k];
-				i++;
-			}
-		}
-		return arr;
-	}
-	/**
-	 * Create a new StoutList from an array of elements. Null values are skipped and leave voids in the list.
-	 * 
-	 * @param arr - the array of elements to translate
-	 * @param node_size - the size of each node within the list
-	 * @return the newly created StoutList instace with all the elements
-	 */
-	public static <E extends Comparable<? super E>> StoutList<E> fromArray(E[] arr, int node_size) {
+	private class NodeView {
 
-		if(arr == null) { return null; }
-		if(node_size < 1) { node_size = DEFAULT_NODESIZE; }
+		public final Node first, last;
 
-		final StoutList<E> list = new StoutList<>(node_size);
-		final StoutList<E>.Node n1 = list.new Node();
-		StoutList<E>.Node n = n1;
-		int p = 0;
-		for(int i = 0; i < arr.length; i++) {
-			if(arr[i] != null) {
-				n.data[p] = arr[i];
-				list.size++;
-				n.size++;
-			}
-			p++;
-			if(p >= n.data.length && i < arr.length - 1) {
-				list.link(n, list.new Node());
-				n = n.next;
-				p = 0;
-			}
+		/**
+		 * Create a new NodeView using the first and last nodes provided.
+		 * 
+		 * @param f - the first node in the view
+		 * @param l - the last node in the view
+		 */
+		public NodeView(Node f, Node l) {
+			this.first = f;
+			this.last = l;
 		}
-		list.link(list.head, n1);
-		list.link(n, list.tail);
-		return list;
+
+		/**
+		 * Append a node to the end of the list view and return a new view including it. WARNING: The source
+		 * list's state will be altered!
+		 * 
+		 * @param n - the node to append
+		 * @return the new NodeView which includes the newly appended node
+		 */
+		public NodeView append(Node n) {
+			linkS(this.last, n);
+			return new NodeView(this.first, n);
+		}
+		/**
+		 * Prepend a node to the beginning of the list view and return a new view including it. WARNING: The source
+		 * list's state will be altered!
+		 * 
+		 * @param n - the node to prepend
+		 * @return the new NodeView which includes the newly prepended node
+		 */
+		public NodeView prepend(Node n) {
+			linkS(n, this.first);
+			return new NodeView(n, this.last);
+		}
 
 	}
+
 
 
 
@@ -904,6 +872,166 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 
 
 
+
+
+
+
+
+/** >>>>>>>>>> PRIVATE HELPERS: Methods <<<<<<<<<<< */
+
+
+	/**
+	 * Get the equivalent ElemIndex representation for a given absolute index.
+	 * 
+	 * @param absolute - the absolute index to convert
+	 * @return the ElemIndex representation
+	 */
+	private ElemIndex fromAbsolute(int absolute) {
+		return fromAbsolute(absolute, null);
+	}
+	/**
+	 * Get the equivalent ElemIndex represntation for a given absolute index.
+	 * This overload allows for buffer passing - a null param will generate a new ElemIndex.
+	 * 
+	 * @param absolute - the absolute index to convert
+	 * @param buff - the ElemIndex buffer to reuse
+	 * @return the ElemIndex representation for the given absolute index
+	 */
+	private ElemIndex fromAbsolute(int absolute, ElemIndex buff) {
+		if(absolute == this.size) {
+			if(buff == null) { buff = new ElemIndex(); }
+			buff.node = this.tail;
+			return buff;
+		}
+		if(absolute >= 0) {
+			Node n = this.head.next;
+			while(n != null) {
+				if(absolute < n.size || n == this.tail) {
+					if(buff == null) { buff = new ElemIndex(); }
+					buff.node = n;
+					buff.idx = absolute;
+					return buff;
+				}
+				absolute -= n.size;
+				n = n.next;
+			}
+		}
+		return null;
+	}
+	/**
+	 * Get the absolute index of a location represented by an ElemIndex.
+	 * 
+	 * @param ei - the ElemIndex to convert
+	 * @return the absolute index, or -1 if this index is no longer valid for the current list's state
+	 */
+	private int toAbsolute(ElemIndex ei) {
+		// static bindings for head/tail?
+		int i = 0;
+		Node n = this.head.next;
+		while(n != null && n != this.tail && n != ei.node) {
+			i += n.size;
+			n = n.next;
+		}
+		if(n == ei.node) {
+			return i + ei.idx;
+		} else {
+			return -1;	// input index not valid
+		}
+	}
+
+	/**
+	 * Link two Nodes. Use linkS() if the parameters' validity has not been determined yet.
+	 * 
+	 * @param a - the first node (comes before the second one in the list)
+	 * @param b - the second node (comes after the first on in the list)
+	 */
+	private void link(Node a, Node b) {
+		a.next = b;
+		b.prev = a;
+	}
+	/**
+	 * Link two Nodes w/ included nullptr safety.
+	 * 
+	 * @param a - the first node (comes before the second one in the list)
+	 * @param b - the second node (comes after the first on in the list)
+	 */
+	private void linkS(Node a, Node b) {
+		if(a != null) a.next = b;
+		if(b != null) b.prev = a;
+	}
+	/**
+	 * Append a newly created node after the provided node.
+	 * 
+	 * @param pre - the base node
+	 * @return the instance of the newly created node
+	 */
+	private Node insertN(Node pre) {
+		return this.insertN(pre, new Node());
+	}
+	/**
+	 * Insert a node after another node and resolve pre/post linking.
+	 * 
+	 * @param a - the base node
+	 * @param n - the node to append to the base
+	 * @return the instance of the newly inserted node
+	 */
+	private Node insertN(Node a, Node n) {
+		final Node b = a.next;
+		this.linkS(a, n);
+		this.linkS(n, b);
+		return n;
+	}
+	/**
+	 * Dissolve all external links pointing to the given node (such that it can be garbage collected).
+	 * 
+	 * @param n - the node to unlink
+	 * @return the instance of the node that was removed
+	 */
+	private Node removeN(Node n) {
+		this.linkS(n.prev, n.next);
+		return n;
+	}
+
+	/**
+	 * Link two NodeView's and return a new view that includes both. WARNING: This method
+	 * only deals with the two views and does not resolve/relink the larger source lists (if any).
+	 * Any external relinking must be done manually beforehand.
+	 * 
+	 * @param a - the first view
+	 * @param b - the second view
+	 * @return the new view including both views
+	 */
+	private NodeView linkView(NodeView a, NodeView b) {
+		this.link(a.last, b.first);
+		return new NodeView(a.first, b.last);
+	}
+	/**
+	 * Link two NodeView's and return a new view that includes both (with nullptr safety).
+	 * WARNING: This method only deals with the two views and does not resolve/relink the
+	 * larger source lists (if any). Any external relinking must be done manually beforehand.
+	 * 
+	 * @param a - the first view
+	 * @param b - the second view
+	 * @return the new view including both views
+	 */
+	private NodeView linkViewS(NodeView a, NodeView b) {
+		if(a != null && b != null) {
+			this.linkS(a.last, b.first);
+			return new NodeView(a.first, b.last);
+		}
+		return null;
+	}
+
+
+
+
+
+
+
+
+/** >>>>>>>>>> PRIVATE HELPERS: Sorting Methods <<<<<<<<<<< */
+
+
 	/**
 	 * Sort an array arr[] using the insertion sort algorithm in the NON-DECREASING order.
 	 * 
@@ -964,78 +1092,6 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 
 
 	/**
-	 * Represents a view of a list of linked nodes.
-	 */
-	private class NodeView {
-
-		public final Node first, last;
-
-		/**
-		 * Create a new NodeView using the first and last nodes provided.
-		 * 
-		 * @param f - the first node in the view
-		 * @param l - the last node in the view
-		 */
-		public NodeView(Node f, Node l) {
-			this.first = f;
-			this.last = l;
-		}
-
-		/**
-		 * Append a node to the end of the list view and return a new view including it. WARNING: The source
-		 * list's state will be altered!
-		 * 
-		 * @param n - the node to append
-		 * @return the new NodeView which includes the newly appended node
-		 */
-		public NodeView append(Node n) {
-			linkS(this.last, n);
-			return new NodeView(this.first, n);
-		}
-		/**
-		 * Prepend a node to the beginning of the list view and return a new view including it. WARNING: The source
-		 * list's state will be altered!
-		 * 
-		 * @param n - the node to prepend
-		 * @return the new NodeView which includes the newly prepended node
-		 */
-		public NodeView prepend(Node n) {
-			linkS(n, this.first);
-			return new NodeView(n, this.last);
-		}
-
-	}
-	/**
-	 * Link two NodeView's and return a new view that includes both. WARNING: This method
-	 * only deals with the two views and does not resolve/relink the larger source lists (if any).
-	 * Any external relinking must be done manually beforehand.
-	 * 
-	 * @param a - the first view
-	 * @param b - the second view
-	 * @return the new view including both views
-	 */
-	private NodeView linkView(NodeView a, NodeView b) {
-		this.link(a.last, b.first);
-		return new NodeView(a.first, b.last);
-	}
-	/**
-	 * Link two NodeView's and return a new view that includes both (with nullptr safety).
-	 * WARNING: This method only deals with the two views and does not resolve/relink the
-	 * larger source lists (if any). Any external relinking must be done manually beforehand.
-	 * 
-	 * @param a - the first view
-	 * @param b - the second view
-	 * @return the new view including both views
-	 */
-	private NodeView linkViewS(NodeView a, NodeView b) {
-		if(a != null && b != null) {
-			this.linkS(a.last, b.first);
-			return new NodeView(a.first, b.last);
-		}
-		return null;
-	}
-
-	/**
 	 * Sort the list. This method is a variant of merge sort where all node buffers are sorted first
 	 * and then merged into a running list of nodes (binary merge). Once all nodes have been iterated,
 	 * the list's elements are replaced.
@@ -1045,15 +1101,21 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 	private void mergeSort(Comparator<? super E> comp) {
 		Node n = this.head.next;
 		if(n != this.tail) {
+			// make the nodes as compact as possible
 			this.condense();
+			// sort the first node
 			this.insertionSort(n.data, comp, n.size);
 			NodeView sorted = new NodeView(n, n);
 			n = n.next;
+			// for each additional node...
 			while(n != this.tail) {
+				// sort the node
 				this.insertionSort(n.data, comp, n.size);
+				// merge the node into the previously sorted list view
 				sorted = this.merge(sorted, new NodeView(n, n), comp);
 				n = n.next;
 			}
+			// replace the old list with the new list
 			this.link(this.head, sorted.first);
 			this.link(sorted.last, this.tail);
 		}
@@ -1075,21 +1137,24 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 			c2 = b.first,
 			c = f;
 		int p1 = 0, p2 = 0, p = 0;
-		while(c1 != null && c2 != null) {
+		while(c1 != null && c2 != null) {	// indefinite loop since all cases break eventually
 
 			final E
 				e1 = c1.get(p1),
 				e2 = c2.get(p2);
-			// System.out.println("#1: " + e1 + "\t#2: " + e2);
 			if(comp.compare(e1, e2) < 0) {
+				// inserting e1
 				c.set(p, e1);
 				c.size++;
 				p1++;
+				// current node for first list has been exhausted
 				if(p1 >= c1.size) {
+					// if it was the last node...
 					if(c1 == a.last) {
-						// finish off #2
+						// finish off second list
 						while(c2 != null) {
 							p++;
+							// add another node to the result list
 							if(p >= c.data.length) {
 								p = 0;
 								final Node n = new Node();
@@ -1099,7 +1164,9 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 							c.set(p, c2.get(p2));
 							c.size++;
 							p2++;
+							// push next node
 							if(p2 >= c2.size) {
+								// if last node, end
 								if(c2 == b.last) {
 									break;
 								}
@@ -1107,20 +1174,25 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 								c2 = c2.next;
 							}
 						}
+						// end outer loop
 						break;
 					}
+					// push the next node
 					p1 = 0;
 					c1 = c1.next;
 				}
 			} else {
+				// inserting e2
 				c.set(p, e2);
 				c.size++;
 				p2++;
+				// current node for second list has been exhausted
 				if(p2 >= c2.size) {
 					if(c2 == b.last) {
-						// finish off #1
+						// finish off first list
 						while(c1 != null) {
 							p++;
+							// add another node to the result list
 							if(p >= c.data.length) {
 								p = 0;
 								final Node n = new Node();
@@ -1130,7 +1202,9 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 							c.set(p, c1.get(p1));
 							c.size++;
 							p1++;
+							// push next node
 							if(p1 >= c1.size) {
+								// if last node, end
 								if(c1 == a.last) {
 									break;
 								}
@@ -1138,13 +1212,16 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 								c1 = c1.next;
 							}
 						}
+						// end outer loop
 						break;
 					}
+					// push the next node
 					p2 = 0;
 					c2 = c2.next;
 				}
 			}
 			p++;
+			// add another node to the result list
 			if(p >= c.data.length) {
 				p = 0;
 				final Node n = new Node();
@@ -1153,9 +1230,10 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 			}
 
 		}
+		// new view for all iterated (sorted) elements
 		return new NodeView(f, c);
 
 	}
 
 
-}
+}	// end StoutList
