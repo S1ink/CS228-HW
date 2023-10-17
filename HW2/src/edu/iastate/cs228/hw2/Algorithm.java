@@ -8,6 +8,7 @@ public enum Algorithm {
 
 	SelectionSort,
 	InsertionSort,
+	BubbleSort,
 	MergeSort,
 	QuickSort
 

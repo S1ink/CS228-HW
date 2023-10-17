@@ -318,4 +318,42 @@ public final class Sorting {
 	}
 
 
+
+
+
+	/**
+	 * Generic bubble sort for comparable types
+	 * 
+	 * @param <T> the comparable type
+	 * @param arr the array
+	 */
+	public static <T extends Comparable<? super T>> void bubbleSort(T[] arr) {
+		bubbleSort(arr, (T a, T b)->a.compareTo(b));
+	}
+	/**
+	 * Generic bubble sort
+	 * 
+	 * @param <T> the type
+	 * @param arr the array
+	 * @param comp the comparator
+	 */
+	public static <T> void bubbleSort(T[] arr, Comparator<? super T> comp) {
+
+		int unsorted_max = arr.length - 1;
+		while(unsorted_max > 1) {
+			int last_sorted = 0;
+			for(int i = 0; i < unsorted_max; i++) {
+				if(comp.compare(arr[i], arr[i + 1]) > 0) {
+					final T tmp = arr[i];
+					arr[i] = arr[i + 1];
+					arr[i + 1] = tmp;
+					last_sorted = i + 1;
+				}
+			}
+			unsorted_max = last_sorted;
+		}
+
+	}
+
+
 }

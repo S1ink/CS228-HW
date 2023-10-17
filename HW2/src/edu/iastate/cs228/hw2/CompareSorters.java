@@ -26,20 +26,20 @@ public class CompareSorters {
 	 **/
 	public static void main(String[] args) throws FileNotFoundException {
 
-		// runIO(
-		// 	null,
-		// 	"Options: 1 - Random generation, 2 - Load from file, 3 - Exit\n--> ",
-		// 	"Enter the number of points to generate:\n--> ",
-		// 	"Enter the file path to load:\n--> ",
-		// 	"\nTrial %d:\n"
-		// );
 		runIO(
-			"Keys: 1 (random integers)  2 (file input)  3 (exit)\n",
-			"Trial %d: ",
-			"Enter number of random points: ",
-			"File name: ",
-			"\n"
+			null,
+			"Options: 1 - Random generation, 2 - Load from file, 3 - Exit\n--> ",
+			"Enter the number of points to generate:\n--> ",
+			"Enter the file path to load:\n--> ",
+			"\nTrial %d:\n"
 		);
+		// runIO(
+		// 	"Keys: 1 (random integers)  2 (file input)  3 (exit)\n",
+		// 	"Trial %d: ",
+		// 	"Enter number of random points: ",
+		// 	"File name: ",
+		// 	"\n"
+		// );
 
 	}
 

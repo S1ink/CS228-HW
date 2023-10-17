@@ -150,6 +150,7 @@ public class PointScanner {
 		switch(a) {
 			case SelectionSort:	return new SelectionSorter(pts);
 			case InsertionSort:	return new InsertionSorter(pts);
+			case BubbleSort:	return new BubbleSorter(pts);
 			case MergeSort:		return new MergeSorter(pts);
 			case QuickSort:		return new QuickSorter(pts);
 			default:			return null;
