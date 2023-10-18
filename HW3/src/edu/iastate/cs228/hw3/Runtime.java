@@ -26,53 +26,60 @@ public class Runtime {
 		System.out.println(l2);
 		l2.add(2, "Z");
 		System.out.println(l2);
-		// final Comparable[] test = l2.toArray();
-		final String[] test = new String[9999];
-		final Random rand = new Random();
-		for(int i = 0; i < test.length; i++) {
-			test[i] = Integer.toString(rand.nextInt(100));
-		}
 
-		StoutList<String>
-			t1 = StoutList.fromArray(test, 4),
-			t2 = StoutList.fromArray(test, 4);
-		long a = System.nanoTime();
-		t1.sort();
-		long b = System.nanoTime();
-		t2.sort2();
-		long c = System.nanoTime();
-		a = System.nanoTime();
-		t1.sortReverse();
-		b = System.nanoTime();
-		t2.sortReverse2();
-		c = System.nanoTime();
-		System.out.println("Advantage: " + (float)(b - a) / (c - b));
-		// System.out.println(t1);
-		// System.out.println(t2);
-		a = System.nanoTime();
-		t1.sort();
-		b = System.nanoTime();
-		t2.sort2();
-		c = System.nanoTime();
-		System.out.println("Advantage: " + (float)(b - a) / (c - b));
-		// System.out.println(t1);
-		// System.out.println(t2);
-		a = System.nanoTime();
-		t1.sortReverse();
-		b = System.nanoTime();
-		t2.sortReverse2();
-		c = System.nanoTime();
-		System.out.println("Advantage: " + (float)(b - a) / (c - b));
-		// System.out.println(t1);
-		// System.out.println(t2);
-		a = System.nanoTime();
-		t1.sort();
-		b = System.nanoTime();
-		t2.sort2();
-		c = System.nanoTime();
-		System.out.println("Advantage: " + (float)(b - a) / (c - b));
-		// System.out.println(t1);
-		// System.out.println(t2);
+		l2.s1();
+		System.out.println(l2);
+
+		// // final Comparable[] test = l2.toArray();
+		// final String[] test = new String[9999];
+		// final Random rand = new Random();
+		// for(int i = 0; i < test.length; i++) {
+		// 	test[i] = Integer.toString(rand.nextInt(100));
+		// }
+
+		// StoutList<String>
+		// 	t1 = StoutList.fromArray(test, 4),
+		// 	t2 = StoutList.fromArray(test, 4);
+		// // System.out.println(t1);
+		// // System.out.println(t2);
+		// long a = System.nanoTime();
+		// t1.s2();
+		// long b = System.nanoTime();
+		// t2.sort();
+		// long c = System.nanoTime();
+
+		// a = System.nanoTime();
+		// t1.sortReverse();
+		// b = System.nanoTime();
+		// t2.s2R();
+		// c = System.nanoTime();
+		// System.out.println("Advantage (R): " + (float)(b - a) / (c - b));
+		// // System.out.println(t1);
+		// // System.out.println(t2);
+		// a = System.nanoTime();
+		// t1.sort();
+		// b = System.nanoTime();
+		// t2.s2();
+		// c = System.nanoTime();
+		// System.out.println("Advantage (F): " + (float)(b - a) / (c - b));
+		// // System.out.println(t1);
+		// // System.out.println(t2);
+		// a = System.nanoTime();
+		// t1.sortReverse();
+		// b = System.nanoTime();
+		// t2.s2R();
+		// c = System.nanoTime();
+		// System.out.println("Advantage (R): " + (float)(b - a) / (c - b));
+		// // System.out.println(t1);
+		// // System.out.println(t2);
+		// a = System.nanoTime();
+		// t1.sort();
+		// b = System.nanoTime();
+		// t2.s2();
+		// c = System.nanoTime();
+		// System.out.println("Advantage (F): " + (float)(b - a) / (c - b));
+		// // System.out.println(t1);
+		// // System.out.println(t2);
 
 		// l2.sortReverse();
 		// System.out.println(l2);

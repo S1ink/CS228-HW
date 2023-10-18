@@ -2,6 +2,7 @@ package edu.iastate.cs228.hw3;
 
 import java.util.NoSuchElementException;
 import java.util.AbstractSequentialList;
+import java.util.Arrays;
 import java.util.ListIterator;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -1101,6 +1102,170 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 	private void mergeSort(Comparator<? super E> comp) {
 		Node n = this.head.next;
 		if(n != this.tail) {
+			// sort the first node
+			this.insertionSort(n.data, comp, n.size);
+			NodeView
+				sorted = new NodeView(n, n),
+				buffer = null;
+			// for each additional node...
+			while((n = n.next) != this.tail) {
+				// sort the node
+				this.insertionSort(n.data, comp, n.size);
+				// merge the node into the previously sorted list view, while using the previous buffer for most of the storage
+				final NodeView s = this.merge(sorted, n, comp, buffer);
+				buffer = sorted;	// at most, 2x the original list size will be allocated
+				sorted = s;
+			}
+			// replace the old list with the new list
+			this.head.next.prev = null;
+			this.tail.prev.next = null;
+			this.link(this.head, sorted.first);
+			this.link(sorted.last, this.tail);
+		}
+	}
+	/**
+	 * Merge algorithm used by mergeSort(). Returns a new NodeView with the sorted elements from both
+	 * initial NodeView's.
+	 * 
+	 * @param a - the first nodeview
+	 * @param b - the second nodeview
+	 * @param comp - the comparator object
+	 * @return a new NodeView for the list containing the sorted elements
+	 */
+	private NodeView merge(NodeView a, Node b, Comparator<? super E> comp, NodeView buff) {
+
+		if(buff == null) {
+			final Node n = new Node();
+			buff = new NodeView(n, n);
+		}
+		Node
+			c1 = a.first,
+			c = buff.first;
+		c.size = 0;
+		int p1 = 0, p2 = 0, p = 0;
+		while(c1 != null) {	// indefinite loop since all cases break eventually
+
+			final E
+				e1 = c1.get(p1),
+				e2 = b.get(p2);
+			if(comp.compare(e1, e2) < 0) {
+				// inserting e1
+				c.set(p, e1);
+				c.size++;
+				p1++;
+				// current node for first list has been exhausted
+				if(p1 >= c1.size) {
+					// if it was the last node...
+					if(c1 == a.last) {
+						// finish off b
+						while(p2 < b.size) {
+							p++;
+							// add another node to the result list
+							if(p >= c.data.length) {
+								p = 0;
+								if(buff.last != c && c.next != null) {
+									// if there is another node in the buffer, use it
+									c = c.next;
+									c.size = 0;
+								} else {
+									// else link in another node
+									final Node n = new Node();
+									link(c, n);
+									c = n;
+								}
+							}
+							c.set(p, b.get(p2));
+							c.size++;
+							p2++;
+						}
+						// end outer loop
+						break;
+					}
+					// push the next node
+					p1 = 0;
+					c1 = c1.next;
+				}
+			} else {
+				// inserting e2
+				c.set(p, e2);
+				c.size++;
+				p2++;
+				// current node for second list has been exhausted
+				if(p2 >= b.size) {
+					// finish off first list
+					while(c1 != null) {
+						p++;
+						// add another node to the result list
+						if(p >= c.data.length) {
+							p = 0;
+							if(buff.last != c && c.next != null) {
+								// if there is another node in the buffer, use it
+								c = c.next;
+								c.size = 0;
+							} else {
+								// else link in another node
+								final Node n = new Node();
+								link(c, n);
+								c = n;
+							}
+						}
+						c.set(p, c1.get(p1));
+						c.size++;
+						p1++;
+						// push next node
+						if(p1 >= c1.size) {
+							// if last node, end
+							if(c1 == a.last) {
+								break;
+							}
+							p1 = 0;
+							c1 = c1.next;
+						}
+					}
+					// end outer loop
+					break;
+				}
+			}
+			p++;
+			// add another node to the result list
+			if(p >= c.data.length) {
+				p = 0;
+				if(buff.last != c && c.next != null) {
+					// if there is another node in the buffer, use it
+					c = c.next;
+					c.size = 0;
+				} else {
+					// else link in another node
+					final Node n = new Node();
+					link(c, n);
+					c = n;
+				}
+			}
+
+		}
+		// new view for all iterated (sorted) elements
+		return new NodeView(buff.first, c);
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+	public void s1() { this.mergeSortOriginal((E a, E b)->a.compareTo(b)); }
+	public void s2() { this.mergeSort((E a, E b)->a.compareTo(b)); }
+	public void s1R() { this.mergeSortOriginal((E a, E b)->b.compareTo(a)); }
+	public void s2R() { this.mergeSort((E a, E b)->b.compareTo(a)); }
+
+	private void mergeSortOriginal(Comparator<? super E> comp) {
+		Node n = this.head.next;
+		if(n != this.tail) {
 			// make the nodes as compact as possible
 			this.condense();
 			// sort the first node
@@ -1120,15 +1285,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 			this.link(sorted.last, this.tail);
 		}
 	}
-	/**
-	 * Merge algorithm used by mergeSort(). Returns a new NodeView with the sorted elements from both
-	 * initial NodeView's.
-	 * 
-	 * @param a - the first nodeview
-	 * @param b - the second nodeview
-	 * @param comp - the comparator object
-	 * @return a new NodeView for the list containing the sorted elements
-	 */
+
 	private NodeView merge(NodeView a, NodeView b, Comparator<? super E> comp) {
 
 		final Node f = new Node();
