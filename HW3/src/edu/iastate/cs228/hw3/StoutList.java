@@ -2,7 +2,6 @@ package edu.iastate.cs228.hw3;
 
 import java.util.NoSuchElementException;
 import java.util.AbstractSequentialList;
-import java.util.Arrays;
 import java.util.ListIterator;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -109,7 +108,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 	@Override
 	public boolean add(E item) throws NullPointerException {
 		try {
-			this.add(this.size, item);
+			this.add(item, new ElemIndex(this.tail, 0));
 		} catch(Exception e) {
 			return false;
 		}
@@ -130,43 +129,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		if(pos < 0 || pos > this.size)
 			{ throw new IndexOutOfBoundsException("Index is not valid!"); }
 
-		final ElemIndex ei = this.fromAbsolute(pos);
-		if(ei.node == this.tail) {
-			// adding to end
-			final Node prev = this.tail.prev;
-			if(prev != this.head && !prev.full()) {
-				// add to previous node
-				prev.add(item);
-			} else {
-				// append a new node and add
-				this.insertN(prev).add(item);
-			}
-		} else if(ei.idx == 0 && ei.node.prev != this.head && !ei.node.prev.full()) {
-			// put in an available spot on a previous node
-			ei.node.prev.add(item);
-		} else if(ei.node.full()) {
-			// split operation
-			final Node
-				n = ei.node,
-				n2 = this.insertN(n);
-			final int m = this.node_max_elems / 2;
-			// copy
-			for(int i = 0; i < m; i++) {
-				n2.data[i] = n.data[m + i];
-				n.data[m + i] = null;
-			}
-			n.size = n2.size = m;
-			// item goes to different node at different index depending on ei.idx
-			if(ei.idx <= m) {
-				n.insert(ei.idx, item);
-			} else {
-				n2.insert(ei.idx - m, item);
-			}
-		} else {
-			// no special node fenagling is necessary
-			ei.node.insert(ei.idx, item);
-		}
-		this.size++;
+		this.add(item, this.fromAbsolute(pos));
 	}
 	/**
 	 * Remove an element from the list at the specified position.
@@ -181,31 +144,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		if(pos < 0 || pos >= this.size) {
 			throw new IndexOutOfBoundsException("Index is not valid!");
 		}
-		final ElemIndex ei = this.fromAbsolute(pos);
-		final Node n = ei.node;
-		final int m = this.node_max_elems / 2;
-		// "remove element and shift as necessary"
-		final E ret = n.remove(ei.idx);
-		// shifting was alredy done so only need further alterment if size <= M/2
-		if(n != this.tail && n.size <= m) {
-			if(n.next.size > m) {
-				// move back a single successing element
-				n.add(n.next.remove(0));
-			} else if(n.next != this.tail) {
-				// move back all elements from successing node
-				for(int i = 0; i < n.next.size; i++) {
-					n.data[n.size + i] = n.next.data[i];
-				}
-				n.size += n.next.size;
-				// remove successing node
-				this.removeN(n.next);
-			} else if(n.size <= 0) {
-				// remove node if now empty
-				this.removeN(n);
-			}
-		}
-		this.size--;
-		return ret;
+		return this.remove(this.fromAbsolute(pos));
 	}
 
 
@@ -227,9 +166,6 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		this.tail = l.tail;
 		// this.mergeSort((E a, E b)->a.compareTo(b));
 	}
-	public void sort2() {
-		this.mergeSort((E a, E b)->a.compareTo(b));
-	}
 	/**
 	 * Sort all elements in the stout list in the NON-INCREASING order. Call the bubbleSort()
 	 * method. After sorting, all but (possibly) the last nodes must be filled with elements.
@@ -242,11 +178,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		StoutList<E> l = StoutList.fromArray(arr, this.node_max_elems);
 		this.head = l.head;
 		this.tail = l.tail;
-		this.mergeSort((E a, E b)->b.compareTo(a));
 		// this.mergeSort((E a, E b)->b.compareTo(a));
-	}
-	public void sortReverse2() {
-		this.mergeSort((E a, E b)->b.compareTo(a));
 	}
 
 
@@ -418,7 +350,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		return arr;
 	}
 	/**
-	 * Create a new StoutList from an array of elements. Null values are skipped and leave voids in the list.
+	 * Create a new StoutList from an array of elements. Null values are skipped and leave holes in the list.
 	 * 
 	 * @param arr - the array of elements to translate
 	 * @param node_size - the size of each node within the list
@@ -506,7 +438,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		 * @return the element at this index
 		 */
 		public E get(int i) {
-			return (i >= 0 && i < this.data.length) ? this.data[i] : null;
+			return (this.data != null && i >= 0 && i < this.data.length) ? this.data[i] : null;
 		}
 		/**
 		 * Assign an element to a specific index. Nothing will be assigned if the index is
@@ -516,7 +448,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		 * @param e - the element to assign
 		 */
 		public void set(int i, E e) {
-			if(i >= 0 && i < this.data.length) {
+			if(this.data != null && i >= 0 && i < this.data.length) {
 				this.data[i] = e;
 			}
 		}
@@ -527,7 +459,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		 * @return {@code true} if the node's buffer is at maximum capacity.
 		 */
 		public boolean full() {
-			return this.size == this.data.length;
+			return this.data != null && this.size == this.data.length;
 		}
 
 
@@ -538,7 +470,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		 * @return whether or not the node was successfully added
 		 */
 		public boolean add(E e) {
-			if (this.size >= list.node_max_elems) {
+			if (this.data == null || this.size >= list.node_max_elems) {
 				return false;
 			}
 			this.data[this.size++] = e;
@@ -551,7 +483,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		 * @param item - the element to be added
 		 */
 		public void insert(int offset, E item) {
-			if(offset < 0 || offset >= this.data.length || this.size >= this.data.length) {
+			if(this.data == null || offset < 0 || offset >= this.data.length || this.size >= this.data.length) {
 				return;
 			}
 			for (int i = this.size - 1; i >= offset; i--) {
@@ -567,7 +499,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		 * @return the deleted element, or null if the index was invalid
 		 */
 		public E remove(int offset) {
-			if(offset < 0 || offset >= this.data.length) {
+			if(this.data == null || offset < 0 || offset >= this.data.length) {
 				return null;
 			}
 			E item = data[offset];
@@ -596,6 +528,23 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		public int idx;
 
 		/**
+		 * Create a new ElemIndex with the specified node and index ('offset').
+		 * 
+		 * @param n - the node which contains the index
+		 * @param i - the index within the node
+		 */
+		public ElemIndex(Node n, int i) {
+			this.node = n;
+			this.idx = i;
+		}
+		/**
+		 * Create a blank ElemIndex will a null container and offset of 0.
+		 */
+		public ElemIndex() {
+			this(null, 0);
+		}
+
+		/**
 		 * Get the element that this index points to.
 		 * 
 		 * @return the element
@@ -619,7 +568,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 	 */
 	private class NodeView {
 
-		public final Node first, last;
+		public Node first, last;
 
 		/**
 		 * Create a new NodeView using the first and last nodes provided.
@@ -667,33 +616,36 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 	private class StoutListIterator implements ListIterator<E> {
 
 		private final StoutList<E> list = StoutList.this;
+		private ElemIndex last = new ElemIndex();
 		private Node container;
-		private int recent, relative, absolute;
+		private int relative, absolute;
 
 
 		/**
 		 * Increment the pointer(s).
 		 */
 		private void increment() {
+			this.last.node = this.container;
+			this.last.idx = this.relative;
 			this.absolute++;
 			this.relative++;
 			if(this.relative >= this.container.size) {
 				this.container = this.container.next;
 				this.relative = 0;
 			}
-			this.recent = this.relative - 1;
 		}
 		/**
 		 * Decrement the pointer(s).
 		 */
 		private void decrement() {
 			this.absolute--;
-			this.relative--;
+			this.last.idx = this.relative--;
 			if(this.relative < 0) {
-				this.container = this.container.prev;
-				this.relative = this.container.size - 1;
+				this.last.node = this.container = this.container.prev;
+				this.last.idx = this.relative = this.container.size - 1;
+			} else {
+				this.last.node = this.container;
 			}
-			this.recent = this.relative;
 		}
 		/**
 		 * Refresh the container and relative offset after (for use after an array operation).
@@ -746,10 +698,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		public E next() throws NoSuchElementException {
 			if(this.hasNext()) {
 				this.increment();
-				if(this.recent < 0) {
-					return this.container.prev.get(this.container.prev.size + this.recent);
-				}
-				return this.container.get(this.recent);
+				return this.last.val();
 			} else {
 				throw new NoSuchElementException();
 			}
@@ -773,7 +722,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		public E previous() throws NoSuchElementException {
 			if(this.hasPrevious()) {
 				this.decrement();
-				return this.container.get(this.recent);
+				return this.last.val();
 			} else {
 				throw new NoSuchElementException();
 			}
@@ -803,17 +752,16 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		 */
 		@Override
 		public void remove() throws IllegalStateException {
-			// if valid recent
-			if(this.recent <= this.relative) {
-				if(this.recent < this.relative) {
-					list.remove(this.absolute - 1);
+			// check no add() or remove()
+			if(this.last.node != null) {
+				if((this.container == this.last.node && this.last.idx < this.relative) || this.container != this.last.node) {
 					this.absolute--;
-				} else {
-					list.remove(this.absolute);
 				}
-				this.refresh();		// TODO optimize refresh
+				list.remove(this.last);
+				this.container = this.last.node;
+				this.relative = this.last.idx;
 				// invalidate recent
-				this.recent = this.relative + 1;
+				this.last.node = null;
 			} else {
 				throw new IllegalStateException();
 			}
@@ -831,12 +779,8 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 				throw new NullPointerException();
 			}
 			// check no add() or remove()
-			if(this.recent <= this.relative) {
-				if(this.recent < 0) {
-					this.container.prev.set(this.container.prev.size + this.recent, e);
-				} else {
-					this.container.set(this.recent, e);
-				}
+			if(this.last.node != null) {
+				this.last.set(e);
 			} else {
 				throw new IllegalStateException();
 			}
@@ -852,12 +796,13 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 			if(e == null) {
 				throw new NullPointerException();
 			}
-			// if valid recent
-			list.add(this.absolute, e);
+			final ElemIndex loc = new ElemIndex(this.container, this.relative);
+			list.add(e, loc);
 			this.absolute++;
-			this.refresh();	// TODO optimize refresh
-			// invalidate recent
-			this.recent = this.relative + 1;
+			this.container = loc.node;
+			this.relative = loc.idx;
+			// invalidate last
+			this.last.node = null;
 		}
 
 		/**
@@ -1023,6 +968,122 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		return null;
 	}
 
+	/**
+	 * Add an element in the exact ElemIndex as provided while abiding by the add rules per requirements.
+	 * This method contains zero checks as to if the location is inline with the list's
+	 * structure - ei. hole prevention must be managed externally. Returns the ElemIndex for the element
+	 * that was previously residing at the location being added to (and updates the parameter instance).
+	 * 
+	 * @param item - the item to add
+	 * @param loc - the exact location to add
+	 * @return the new location of the last element
+	 */
+	private ElemIndex add(E item, ElemIndex loc) {
+
+		final Node C = loc.node;	// container node
+		if(C == this.tail) {
+			// adding to end
+			if(C.prev != this.head && !C.prev.full()) {
+				// add to previous node
+				C.prev.add(item);
+			} else {
+				// append a new node and add
+				this.insertN(C.prev).add(item);
+			}
+			// either way, if C was already tail, then it should still be tail (no reassignment here)
+		} else if(loc.idx == 0 && C.prev != this.head && !C.prev.full()) {
+			// put in an available spot on a previous node
+			C.prev.add(item);
+			// the previous node was altered, so the index of the accessed element doesn't change at all (no reassignment here)
+		} else if(C.full()) {
+			// split operation
+			final Node n = this.insertN(C);
+			final int m = this.node_max_elems / 2;
+			// copy
+			for(int i = 0; i < m; i++) {
+				n.data[i] = C.data[m + i];
+				C.data[m + i] = null;
+			}
+			C.size = n.size = m;
+			// item goes to different node at different index depending on ei.idx
+			if(loc.idx <= m) {
+				C.insert(loc.idx, item);
+				if(loc.idx < m) {
+					// if idx < m, the next elem will be in this node
+					loc.idx++;
+				} else {
+					// else if idx == m, the next elem will be the first one in the next node
+					loc.node = n;
+					loc.idx = 0;
+				}
+			} else {
+				n.insert(loc.idx - m, item);
+				//  there must be at least 1 elem after loc.idx, thus the next elem must be in this node
+				loc.node = n;
+				loc.idx = loc.idx - m + 1;
+			}
+		} else {
+			// no special node fenagling is necessary
+			C.insert(loc.idx, item);
+			if(loc.idx == C.data.length - 1) {
+				// if idx was the last one, next elem is in the next node
+				loc.node = C.next;
+				loc.idx = 0;
+				// ^ technically meaningless since the iterator always jumps to the next node beforehand and thus this never needed
+			} else {
+				// else next elem is in the next index
+				loc.idx++;
+			}
+		}
+		this.size++;
+		return loc;
+
+	}
+	/**
+	 * Remove the element at the specified location and modify the list per applicant requirements.
+	 * The location parameter is modified to represent the new relative location of the preivous pointer.
+	 * 
+	 * @param loc - the exact location for which to remove an element from the list
+	 * @return the removed element's instance
+	 */
+	private E remove(ElemIndex loc) {
+
+		final Node C = loc.node;
+		final int m = this.node_max_elems / 2;
+		// "remove element and shift as necessary"
+		final E ret = C.remove(loc.idx);
+		// shifting was alredy done so only need further alterment if size <= M/2
+		if(C != this.tail && C.size <= m) {
+			if(C.next.size > m) {
+				// move back a single successing element
+				C.add(C.next.remove(0));
+				// don't need to shift the pointer's node since there will always be an element in front of it in this case
+			} else if(C.size <= 0) {
+				// remove node if now empty, since the last case just copies all elements (this will mimic and optimize in that case)
+				this.removeN(C);
+				// need to bump the location since this node is no longer valid
+				loc.node = C.next;
+				loc.idx = 0;
+			} else if(C.next != this.tail) {
+				// move back all elements from successing node
+				for(int i = 0; i < C.next.size; i++) {
+					C.data[C.size + i] = C.next.data[i];
+				}
+				C.size += C.next.size;
+				// remove successing node
+				this.removeN(C.next);
+				// no pointer shift since elements are moved to be in front of the pointer
+			}
+		} else if(loc.idx >= C.size) {
+			// if we removed the last element (and no modifications made), move to the beginning of the next node
+			loc.node = C.next;
+			loc.idx = 0;
+		}
+		this.size--;
+		return ret;
+
+	}
+
 
 
 
@@ -1094,7 +1155,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 
 	/**
 	 * Sort the list. This method is a variant of merge sort where all node buffers are sorted first
-	 * and then merged into a running list of nodes (binary merge). Once all nodes have been iterated,
+	 * and then merged into a running list of sorted nodes. Once all nodes have been iterated,
 	 * the list's elements are replaced.
 	 * 
 	 * @param comp - the comparator that determines the direction of sorting
@@ -1218,6 +1279,15 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 							if(c1 == a.last) {
 								break;
 							}
+							// else {
+							// 	// direct linkage
+							// 	linkS(c1.prev, null);
+							// 	link(c, c1.next);
+							// 	System.out.println(Arrays.toString(c.data));
+							// 	c = a.last;
+							// 	a.last = c1.prev;
+							// 	break;
+							// }
 							p1 = 0;
 							c1 = c1.next;
 						}
@@ -1245,150 +1315,6 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		}
 		// new view for all iterated (sorted) elements
 		return new NodeView(buff.first, c);
-
-	}
-
-
-
-
-
-
-
-
-
-
-
-	public void s1() { this.mergeSortOriginal((E a, E b)->a.compareTo(b)); }
-	public void s2() { this.mergeSort((E a, E b)->a.compareTo(b)); }
-	public void s1R() { this.mergeSortOriginal((E a, E b)->b.compareTo(a)); }
-	public void s2R() { this.mergeSort((E a, E b)->b.compareTo(a)); }
-
-	private void mergeSortOriginal(Comparator<? super E> comp) {
-		Node n = this.head.next;
-		if(n != this.tail) {
-			// make the nodes as compact as possible
-			this.condense();
-			// sort the first node
-			this.insertionSort(n.data, comp, n.size);
-			NodeView sorted = new NodeView(n, n);
-			n = n.next;
-			// for each additional node...
-			while(n != this.tail) {
-				// sort the node
-				this.insertionSort(n.data, comp, n.size);
-				// merge the node into the previously sorted list view
-				sorted = this.merge(sorted, new NodeView(n, n), comp);
-				n = n.next;
-			}
-			// replace the old list with the new list
-			this.link(this.head, sorted.first);
-			this.link(sorted.last, this.tail);
-		}
-	}
-
-	private NodeView merge(NodeView a, NodeView b, Comparator<? super E> comp) {
-
-		final Node f = new Node();
-		Node
-			c1 = a.first,
-			c2 = b.first,
-			c = f;
-		int p1 = 0, p2 = 0, p = 0;
-		while(c1 != null && c2 != null) {	// indefinite loop since all cases break eventually
-
-			final E
-				e1 = c1.get(p1),
-				e2 = c2.get(p2);
-			if(comp.compare(e1, e2) < 0) {
-				// inserting e1
-				c.set(p, e1);
-				c.size++;
-				p1++;
-				// current node for first list has been exhausted
-				if(p1 >= c1.size) {
-					// if it was the last node...
-					if(c1 == a.last) {
-						// finish off second list
-						while(c2 != null) {
-							p++;
-							// add another node to the result list
-							if(p >= c.data.length) {
-								p = 0;
-								final Node n = new Node();
-								link(c, n);
-								c = n;
-							}
-							c.set(p, c2.get(p2));
-							c.size++;
-							p2++;
-							// push next node
-							if(p2 >= c2.size) {
-								// if last node, end
-								if(c2 == b.last) {
-									break;
-								}
-								p2 = 0;
-								c2 = c2.next;
-							}
-						}
-						// end outer loop
-						break;
-					}
-					// push the next node
-					p1 = 0;
-					c1 = c1.next;
-				}
-			} else {
-				// inserting e2
-				c.set(p, e2);
-				c.size++;
-				p2++;
-				// current node for second list has been exhausted
-				if(p2 >= c2.size) {
-					if(c2 == b.last) {
-						// finish off first list
-						while(c1 != null) {
-							p++;
-							// add another node to the result list
-							if(p >= c.data.length) {
-								p = 0;
-								final Node n = new Node();
-								link(c, n);
-								c = n;
-							}
-							c.set(p, c1.get(p1));
-							c.size++;
-							p1++;
-							// push next node
-							if(p1 >= c1.size) {
-								// if last node, end
-								if(c1 == a.last) {
-									break;
-								}
-								p1 = 0;
-								c1 = c1.next;
-							}
-						}
-						// end outer loop
-						break;
-					}
-					// push the next node
-					p2 = 0;
-					c2 = c2.next;
-				}
-			}
-			p++;
-			// add another node to the result list
-			if(p >= c.data.length) {
-				p = 0;
-				final Node n = new Node();
-				link(c, n);
-				c = n;
-			}
-
-		}
-		// new view for all iterated (sorted) elements
-		return new NodeView(f, c);
 
 	}
 
