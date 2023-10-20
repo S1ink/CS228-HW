@@ -5,6 +5,7 @@ import java.util.AbstractSequentialList;
 import java.util.ListIterator;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Arrays;
 
 
 /**
@@ -161,7 +162,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 	public void sort() {
 		E[] arr = this.toArray();
 		this.insertionSort(arr, (E a, E b)->a.compareTo(b));
-		StoutList<E> l = StoutList.fromArray(arr, this.node_max_elems);
+		final StoutList<E> l = StoutList.fromArray(arr, this.node_max_elems);
 		this.head = l.head;
 		this.tail = l.tail;
 		// this.mergeSort((E a, E b)->a.compareTo(b));
@@ -175,7 +176,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 	public void sortReverse() {
 		E[] arr = this.toArray();
 		this.bubbleSort(arr);
-		StoutList<E> l = StoutList.fromArray(arr, this.node_max_elems);
+		final StoutList<E> l = StoutList.fromArray(arr, this.node_max_elems);
 		this.head = l.head;
 		this.tail = l.tail;
 		// this.mergeSort((E a, E b)->b.compareTo(a));
@@ -511,6 +512,16 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 			return item;
 		}
 
+		/**
+		 * Get the string representation of the Node.
+		 * 
+		 * @return the string representation
+		 */
+		@Override
+		public String toString() {
+			return Arrays.toString(this.data) + ", Size: " + this.size;
+		}
+
 
 	}
 
@@ -622,42 +633,6 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 
 
 		/**
-		 * Increment the pointer(s).
-		 */
-		private void increment() {
-			this.last.node = this.container;
-			this.last.idx = this.relative;
-			this.absolute++;
-			this.relative++;
-			if(this.relative >= this.container.size) {
-				this.container = this.container.next;
-				this.relative = 0;
-			}
-		}
-		/**
-		 * Decrement the pointer(s).
-		 */
-		private void decrement() {
-			this.absolute--;
-			this.last.idx = this.relative--;
-			if(this.relative < 0) {
-				this.last.node = this.container = this.container.prev;
-				this.last.idx = this.relative = this.container.size - 1;
-			} else {
-				this.last.node = this.container;
-			}
-		}
-		/**
-		 * Refresh the container and relative offset after (for use after an array operation).
-		 */
-		private void refresh() {
-			final ElemIndex ei = list.fromAbsolute(this.absolute);
-			this.container = ei.node;
-			this.relative = ei.idx;
-		}
-
-
-		/**
 		 * Default constructor. Starts the iterator at index 0.
 		 */
 		public StoutListIterator() {
@@ -671,7 +646,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		 */
 		public StoutListIterator(int pos) throws IndexOutOfBoundsException {
 			if(pos < 0 || pos > list.size) {
-				throw new IndexOutOfBoundsException();
+				throw new IndexOutOfBoundsException("Cannot create iterator outside of list bounds!");
 			}
 			this.absolute = pos;
 			this.refresh();
@@ -700,7 +675,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 				this.increment();
 				return this.last.val();
 			} else {
-				throw new NoSuchElementException();
+				throw new NoSuchElementException("List end has already been reached");
 			}
 		}
 		/**
@@ -724,7 +699,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 				this.decrement();
 				return this.last.val();
 			} else {
-				throw new NoSuchElementException();
+				throw new NoSuchElementException("List beginning has already been reached");
 			}
 		}
 		/**
@@ -763,7 +738,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 				// invalidate recent
 				this.last.node = null;
 			} else {
-				throw new IllegalStateException();
+				throw new IllegalStateException("Must iterate before calling!");
 			}
 		}
 		/**
@@ -782,7 +757,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 			if(this.last.node != null) {
 				this.last.set(e);
 			} else {
-				throw new IllegalStateException();
+				throw new IllegalStateException("Must iterate before calling!");
 			}
 		}
 		/**
@@ -794,7 +769,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		@Override
 		public void add(E e) throws NullPointerException {
 			if(e == null) {
-				throw new NullPointerException();
+				throw new NullPointerException("Cannot add null element!");
 			}
 			final ElemIndex loc = new ElemIndex(this.container, this.relative);
 			list.add(e, loc);
@@ -811,6 +786,44 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		@Override
 		public String toString() {
 			return list.toStringInternal(this);
+		}
+
+
+
+		/**
+		 * Increment the pointer(s).
+		 */
+		private void increment() {
+			this.last.node = this.container;
+			this.last.idx = this.relative;
+			this.absolute++;
+			this.relative++;
+			if(this.relative >= this.container.size) {
+				this.container = this.container.next;
+				this.relative = 0;
+			}
+		}
+		/**
+		 * Decrement the pointer(s).
+		 */
+		private void decrement() {
+			this.absolute--;
+			// PRE decrment!!! - 2 hrs of debugging was spent on this line using post-decrement :(
+			this.last.idx = --this.relative;
+			if(this.relative < 0) {
+				this.last.node = this.container = this.container.prev;
+				this.last.idx = this.relative = this.container.size - 1;
+			} else {
+				this.last.node = this.container;
+			}
+		}
+		/**
+		 * Refresh the container and relative offset (for use after an array operation).
+		 */
+		private void refresh() {
+			final ElemIndex ei = list.fromAbsolute(this.absolute);
+			this.container = ei.node;
+			this.relative = ei.idx;
 		}
 
 
@@ -969,7 +982,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 	}
 
 	/**
-	 * Add an element in the exact ElemIndex as provided while abiding by the add rules per requirements.
+	 * Add an element in the exact ElemIndex as provided while abiding by the required rules.
 	 * This method contains zero checks as to if the location is inline with the list's
 	 * structure - ei. hole prevention must be managed externally. Returns the ElemIndex for the element
 	 * that was previously residing at the location being added to (and updates the parameter instance).
@@ -1040,7 +1053,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 
 	}
 	/**
-	 * Remove the element at the specified location and modify the list per applicant requirements.
+	 * Remove the element at the specified location and modify the list per requirement rules.
 	 * The location parameter is modified to represent the new relative location of the preivous pointer.
 	 * 
 	 * @param loc - the exact location for which to remove an element from the list
@@ -1156,7 +1169,8 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 	/**
 	 * Sort the list. This method is a variant of merge sort where all node buffers are sorted first
 	 * and then merged into a running list of sorted nodes. Once all nodes have been iterated,
-	 * the list's elements are replaced.
+	 * the list's elements are replaced. Reuses the linked node buffers such that there are only ever two
+	 * allocations that get swapped back and forth for merging.
 	 * 
 	 * @param comp - the comparator that determines the direction of sorting
 	 */
