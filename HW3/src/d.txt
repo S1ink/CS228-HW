@@ -1,0 +1,85 @@
+41 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, bsK), (TnJrOZY, aWjBm), (YK, Y), (V, K), (UeYxEmxR, -), (QFBRQzGp, NMq), (ajXxQpT, MnOXGSj), (LjC, -), (Aa, | KINjLNGqMr), (IwvawmoL, eb), (S, i), (O, -)] >> 40
+40 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, bsK), (TnJrOZY, aWjBm), (YK, Y), (V, K), (UeYxEmxR, -), (QFBRQzGp, NMq), (ajXxQpT, MnOXGSj), (LjC, -), (| Aa, KINjLNGqMr), (IwvawmoL, eb), (S, i), (O, -)] >> 39
+KINjLNGqMr
+39 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, bsK), (TnJrOZY, aWjBm), (YK, Y), (V, K), (UeYxEmxR, -), (QFBRQzGp, NMq), (ajXxQpT, MnOXGSj), (| LjC, -), (Aa, IwvawmoL), (eb, -), (S, i), (O, -)] >> 38
+38 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, bsK), (TnJrOZY, aWjBm), (YK, Y), (V, K), (UeYxEmxR, -), (QFBRQzGp, NMq), (ajXxQpT, | MnOXGSj), (LjC, -), (Aa, IwvawmoL), (eb, -), (S, i), (O, -)] >> 37
+LjC
+37 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, bsK), (TnJrOZY, aWjBm), (YK, Y), (V, K), (UeYxEmxR, -), (QFBRQzGp, NMq), (| ajXxQpT, MnOXGSj), (Aa, -), (IwvawmoL, -), (eb, -), (S, i), (O, -)] >> 36
+MnOXGSj
+36 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, bsK), (TnJrOZY, aWjBm), (YK, Y), (V, K), (UeYxEmxR, -), (QFBRQzGp, | NMq), (ajXxQpT, Aa), (IwvawmoL, -), (eb, -), (S, i), (O, -)] >> 35
+Aa
+35 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, bsK), (TnJrOZY, aWjBm), (YK, Y), (V, K), (UeYxEmxR, -), (| QFBRQzGp, NMq), (ajXxQpT, IwvawmoL), (eb, -), (S, i), (O, -)] >> 34
+34 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, bsK), (TnJrOZY, aWjBm), (YK, Y), (V, K), (| UeYxEmxR, -), (QFBRQzGp, NMq), (ajXxQpT, IwvawmoL), (eb, -), (S, i), (O, -)] >> 33
+NMq
+33 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, bsK), (TnJrOZY, aWjBm), (YK, Y), (V, | K), (UeYxEmxR, -), (QFBRQzGp, ajXxQpT), (IwvawmoL, -), (eb, -), (S, i), (O, -)] >> 32
+ajXxQpT
+32 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, bsK), (TnJrOZY, aWjBm), (YK, Y), (| V, K), (UeYxEmxR, -), (QFBRQzGp, IwvawmoL), (eb, -), (S, i), (O, -)] >> 31
+31 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, bsK), (TnJrOZY, aWjBm), (YK, | Y), (V, K), (UeYxEmxR, -), (QFBRQzGp, IwvawmoL), (eb, -), (S, i), (O, -)] >> 30
+UeYxEmxR
+30 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, bsK), (TnJrOZY, aWjBm), (| YK, Y), (V, K), (QFBRQzGp, -), (IwvawmoL, -), (eb, -), (S, i), (O, -)] >> 29
+K
+29 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, bsK), (TnJrOZY, | aWjBm), (YK, Y), (V, QFBRQzGp), (IwvawmoL, -), (eb, -), (S, i), (O, -)] >> 28
+QFBRQzGp
+28 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, bsK), (| TnJrOZY, aWjBm), (YK, Y), (V, IwvawmoL), (eb, -), (S, i), (O, -)] >> 27
+27 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, | bsK), (TnJrOZY, aWjBm), (YK, Y), (V, IwvawmoL), (eb, -), (S, i), (O, -)] >> 26
+Y
+26 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, e), (| CInbqCgIF, bsK), (TnJrOZY, aWjBm), (YK, V), (IwvawmoL, -), (eb, -), (S, i), (O, -)] >> 25
+V
+25 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, | e), (CInbqCgIF, bsK), (TnJrOZY, aWjBm), (YK, IwvawmoL), (eb, -), (S, i), (O, -)] >> 24
+24 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (| e, e), (CInbqCgIF, bsK), (TnJrOZY, aWjBm), (YK, IwvawmoL), (eb, -), (S, i), (O, -)] >> 23
+aWjBm
+23 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, | yEnvm), (e, e), (CInbqCgIF, bsK), (TnJrOZY, YK), (IwvawmoL, -), (eb, -), (S, i), (O, -)] >> 22
+22 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (| eaK, yEnvm), (e, e), (CInbqCgIF, bsK), (TnJrOZY, YK), (IwvawmoL, -), (eb, -), (S, i), (O, -)] >> 21
+bsK
+21 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, | gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, TnJrOZY), (YK, -), (IwvawmoL, -), (eb, -), (S, i), (O, -)] >> 20
+TnJrOZY
+20 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (| smzGH, gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, YK), (IwvawmoL, -), (eb, -), (S, i), (O, -)] >> 19
+19 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, | gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, e), (CInbqCgIF, YK), (IwvawmoL, -), (eb, -), (S, i), (O, -)] >> 18
+e
+18 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (| iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, CInbqCgIF), (YK, -), (IwvawmoL, -), (eb, -), (S, i), (O, -)] >> 17
+CInbqCgIF
+17 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, | AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, YK), (IwvawmoL, -), (eb, -), (S, i), (O, -)] >> 16
+16 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (| lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, yEnvm), (e, YK), (IwvawmoL, -), (eb, -), (S, i), (O, -)] >> 15
+yEnvm
+15 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, | o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, e), (YK, -), (IwvawmoL, -), (eb, -), (S, i), (O, -)] >> 14 
+e
+14 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (| ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, YK), (IwvawmoL, -), (eb, -), (S, i), (O, -)] >> 13
+YK
+13 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, | pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, IwvawmoL), (eb, -), (S, i), (O, -)] >> 12
+IwvawmoL
+12 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (| s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, eb), (S, i), (O, -)] >> 11
+eb
+11 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (| sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, S), (i, -), (O, -)] >> 10
+S
+10 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, | pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, i), (O, -)] >> 9
+9 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (| u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, gUg), (eaK, i), (O, -)] >> 8
+gUg
+8 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (| uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, eaK), (i, -), (O, -)] >> 7
+7 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, | uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, gxpSJmI), (smzGH, eaK), (i, -), (O, -)] >> 6
+gxpSJmI
+6 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (| Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, smzGH), (eaK, -), (i, -), (O, -)] >> 5
+5 >> [(yzZb, yn), (xTaYnqVlK, -), (vub, | usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, AXsiTlpq), (iYX, smzGH), (eaK, -), (i, -), (O, -)] >> 4
+AXsiTlpq
+4 >> [(yzZb, yn), (xTaYnqVlK, -), (| vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, iYX), (smzGH, -), (eaK, -), (i, -), (O, -)] >> 3
+3 >> [(yzZb, yn), (| xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, o), (lLCL, iYX), (smzGH, -), (eaK, -), (i, -), (O, -)] >> 2
+o
+2 >> [(yzZb, | yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, lLCL), (iYX, -), (smzGH, -), (eaK, -), (i, -), (O, -)] >> 1
+lLCL
+1 >> [(| yzZb, yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, iYX), (smzGH, -), (eaK, -), (i, -), (O, -)] >> 0
+iYX
+0 >> [(yzZb, | yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, smzGH), (eaK, -), (i, -), (O, -)] >> 1
+smzGH
+0 >> [(yzZb, | yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, eaK), (i, -), (O, -)] >> 1
+eaK
+0 >> [(yzZb, | yn), (xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, i), (O, -)] >> 1
+1 >> [(yzZb, yn), (| xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, i), (O, -)] >> 2
+O
+1 >> [(yzZb, yn), (| xTaYnqVlK, -), (vub, usftC), (Ksvyjoe, uFZ), (uC, -), (u, pXNMaKdrQw), (sCoSj, -), (s, pmqMt), (ADUytIiIps, i)] >> 2
+2 >> Error occured while testing StoutList
+>> java.lang.NullPointerException: Cannot read field "size" because "this.container" is null
+Exception in thread "main" java.lang.NullPointerException: Cannot read field "size" because "this.container" is null
+        at edu.iastate.cs228.hw3.StoutList$StoutListIterator.increment(StoutList.java:790)
+        at edu.iastate.cs228.hw3.StoutList$StoutListIterator.next(StoutList.java:664)
+        at edu.iastate.cs228.hw3.StoutList$StoutListIterator.next(StoutList.java:1)
+        at edu.iastate.cs228.hw3.Runtime.test(Runtime.java:147)
+        at edu.iastate.cs228.hw3.Runtime.main(Runtime.java:17)

@@ -9,19 +9,22 @@ public class Runtime {
 
 	public static void main(String... args) {
 
-		final Random r = new Random();
+		StoutList<String> _l = new StoutList<>();
+		_l.add(null);
 
-		for(int t = r.nextInt(50) + 50; t > 0; t--) {
-			try{
-				final StoutList<String> list = new StoutList<>((r.nextInt(5) + 1) * 2);
-				System.out.println(">>>>>>>>>>>>>>>>>>>> Running Test <<<<<<<<<<<<<<<<<<<<<<<<");
-				test(list, r);
-				System.out.println(">>>>>>>>>>>>>>>>>>>> Test Completed <<<<<<<<<<<<<<<<<<<<<<<<");
-			} catch(Exception e) {
-				throw e;
-			}
+		// final Random r = new Random();
 
-		}
+		// for(int t = r.nextInt(50) + 50; t > 0; t--) {
+		// 	try{
+		// 		final StoutList<String> list = new StoutList<>((r.nextInt(5) + 1) * 2);
+		// 		System.out.println(">>>>>>>>>>>>>>>>>>>> Running Test <<<<<<<<<<<<<<<<<<<<<<<<");
+		// 		test(list, r);
+		// 		System.out.println(">>>>>>>>>>>>>>>>>>>> Test Completed <<<<<<<<<<<<<<<<<<<<<<<<");
+		// 	} catch(Exception e) {
+		// 		throw e;
+		// 	}
+
+		// }
 
 		// for(char c = 'A'; c <= 'Z'; c++) {
 		// 	list.add(Character.toString(c));
@@ -49,7 +52,7 @@ public class Runtime {
 		StringBuilder b = new StringBuilder();
 		for(;len > 0; len--) {
 			final int s = r.nextInt(52);
-			b.append(Character.toString((s > 25 ? 'A' + s - 26 : 'a' + s)));
+			b.append(Character.toString((char)(s > 25 ? 'A' + s - 26 : 'a' + s)));
 		}
 		return b.toString();
 

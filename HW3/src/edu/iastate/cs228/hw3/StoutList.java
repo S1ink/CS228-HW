@@ -108,6 +108,9 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 	 */
 	@Override
 	public boolean add(E item) throws NullPointerException {
+		if(item == null) {
+			throw new NullPointerException("Cannot add null element!");
+		}
 		try {
 			this.add(item, new ElemIndex(this.tail, 0));
 		} catch(Exception e) {
@@ -1066,7 +1069,7 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 		// "remove element and shift as necessary"
 		final E ret = C.remove(loc.idx);
 		// shifting was alredy done so only need further alterment if size <= M/2
-		if(C != this.tail && C.size <= m) {
+		if(C != this.tail && C.size + 1 <= m) {
 			if(C.next.size > m) {
 				// move back a single successing element
 				C.add(C.next.remove(0));
