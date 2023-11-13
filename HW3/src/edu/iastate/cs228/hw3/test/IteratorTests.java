@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.junit.jupiter.api.Test;
-
+import edu.iastate.cs228.hw3.StoutList;
 
 class IteratorTests {
 
@@ -104,8 +104,7 @@ class IteratorTests {
 			list.add(e);
 		}
 		for (int i = 0; i < dataArray.length; i++) {
-			assertEquals(dataArray[i], list.listIterator(i).next(),
-					"Expected to iterator to say it has next element.");
+			assertEquals(dataArray[i], list.listIterator(i).next(), "Expected to iterator to say it has next element.");
 		}
 	}
 
@@ -361,7 +360,6 @@ class IteratorTests {
 		iter = lst.listIterator(12);
 		iter.previous();
 		iter.set(545.567);
-		System.out.println(lst.toStringInternal(iter));
 		assertEquals(expected, lst.toStringInternal(iter), "Set test did not result in expeced list");
 	}
 

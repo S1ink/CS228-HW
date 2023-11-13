@@ -1,7 +1,9 @@
 package edu.iastate.cs228.hw3.test;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
+import edu.iastate.cs228.hw3.StoutList;
 
 
 class StoutListTests {
