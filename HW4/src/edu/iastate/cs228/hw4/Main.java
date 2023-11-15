@@ -2,9 +2,8 @@ package edu.iastate.cs228.hw4;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 
@@ -68,65 +67,6 @@ public class Main {
 
 
 	}
-	public static class CharArrayStack {
-
-		public static final int
-			DEFAULT_SIZE = 16,
-			REALLOC_SCALE = 2;
-		private char[] stack;
-		private int top = 0;
-
-		public CharArrayStack()
-			{ this.stack = new char[DEFAULT_SIZE]; }
-		public CharArrayStack(int size_init)
-			{ this.stack = new char[size_init]; }
-		/**
-		 * Be advised that this constructor will not make a deep copy if a preexisting array reference is passed!
-		 * 
-		 * @param init
-		 */
-		public CharArrayStack(char... init) {
-			this.stack = init;
-			this.top = this.stack.length;
-		}
-
-
-		public void push(char c) {
-			this.ensureCapacity(this.size() + 1);
-			this.stack[this.top] = c;
-			this.top++;
-		}
-		public char pop() throws NoSuchElementException {
-			if(this.empty()) { throw new NoSuchElementException(); }
-			this.top--;
-			final char val = this.stack[this.top];
-			this.stack[this.top] = '\0';
-			return val;
-		}
-		public char peek() throws NoSuchElementException {
-			if(this.empty()) { throw new NoSuchElementException(); }
-			return this.stack[this.top];
-		}
-		public boolean empty() {
-			return this.top == 0;
-		}
-
-		public int size() { return this.top; }
-		public int capacity() { return this.stack.length; }
-
-		private void ensureCapacity(int cap) {
-			if(cap > this.capacity()) {
-				this.stack = Arrays.copyOf(this.stack, this.stack.length * REALLOC_SCALE);
-			}
-		}
-
-
-		public String toString() {
-			return new String(this.stack, 0, this.size());
-		}
-
-
-	}
 
 	/** InvalidFormatException is thrown when an encoding string is ill-formed. */
 	public static class InvalidFormatException extends Exception {}
@@ -158,7 +98,7 @@ public class Main {
 		 */
 		public MsgTree(String encodingString) throws InvalidFormatException { MsgTree.buildTree(this, encodingString); }
 
-		private boolean isTraversal() { return this.item == '\0'; }
+
 		private boolean isEndpoint() { return this.item != '\0'; }
 
 
@@ -269,71 +209,6 @@ public class Main {
 			return b.toString();
 		}
 
-		public static String toString(MsgTree root) {
-			final String[] rows = build_string(root);
-			StringBuilder b = new StringBuilder(rows[0]);
-			for(int i = 1; i < rows.length; i++) {
-				b.append('\n').append(rows[i]);
-			}
-			return b.toString();
-		}
-		private static String[] build_string(MsgTree base) {
-			if(base.left == null && base.right == null && base.isEndpoint()) {
-				return new String[]{ String.format("[%c]", base.item) };		// endpoint --> no need to represent null branches
-			}
-			// continue branches, evaluate each side
-			String[] left, right;
-			if(base.left != null) {
-				left = build_string(base.left);
-			} else {
-				left = new String[]{ "[null]" };
-			}
-			if(base.right != null) {
-				right = build_string(base.right);
-			} else {
-				right = new String[]{ "[null]" };
-			}
-			// combine sides for each String row, insert rootpoint
-			int node_left = 0, node_right = 0;
-			final char[] ltop = left[0].toCharArray(), rtop = right[0].toCharArray();
-			while(ltop[ltop.length - 1 - node_left] != ']') {
-				node_left++;
-			}
-			while(rtop[node_right] != '[') {
-				node_right++;
-			}
-			final String[] rows = new String[Math.max(left.length + node_left + 1, right.length + node_right + 1) + 1];
-			rows[0] = String.format(String.format("%%%ds[*]%%%ds", ltop.length, rtop.length), "", "");		// "%Ls[*]%Rs"
-			for(int i = 1; i < rows.length; i++) {
-				final int
-					rel_left = (i - node_left - 2),		// i - 1 - (node_left + 1)
-					rel_right = (i - node_right - 2),
-					off_left = (node_left + 1) + rel_left,
-					off_right = (node_right + 1) - rel_right;
-				rows[i] = String.format("%s   %s",
-					(rel_left < 0) ? gen_left_vertex(ltop.length - off_left, off_left) :
-						((rel_left < left.length) ? left[rel_left] : String.format(String.format("%%%ds", ltop.length), "")),
-					(rel_right < 0) ? gen_right_vertex(off_right, rtop.length - off_right) :
-						((rel_right < right.length) ? right[rel_right] : String.format(String.format("%%%ds", rtop.length), ""))
-				);
-			}
-			return rows;
-		}
-		private static String gen_left_vertex(int len, int off) {
-			if(off == 0) {
-				return String.format(String.format("%%%ds", len), "/");
-			} else {
-				return String.format(String.format("%%%ds%%-%ds", len - off, off), "", "/");
-			}
-		}
-		private static String gen_right_vertex(int len, int off) {
-			if(off == 0) {
-				return String.format(String.format("%%-%ds", len), "\\");
-			} else {
-				return String.format(String.format("%%%ds%%%ds", off, len - off), "\\", "");
-			}
-		}
-
 
 	}
 
@@ -406,6 +281,7 @@ public class Main {
 		}
 
 	}
+
 
 	public static void main(String... args) {
 
