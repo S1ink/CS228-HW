@@ -12,6 +12,10 @@ import java.util.NoSuchElementException;
  */
 public class MsgTree {
 
+	/** InvalidFormatException is thrown when an encoding string is ill-formed. */
+	public static class InvalidFormatException extends Exception {}
+
+
 	private static final char EMPTY_ITEM = '\0';
 
 	public char item = EMPTY_ITEM;

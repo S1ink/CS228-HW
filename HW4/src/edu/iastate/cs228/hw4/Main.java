@@ -4,6 +4,8 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import edu.iastate.cs228.hw4.MsgTree.InvalidFormatException;
+
 
 /**
  * @author Sam Richter
