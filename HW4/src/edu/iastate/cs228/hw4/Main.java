@@ -238,8 +238,25 @@ public class Main {
 		/** Internal recursive worker for print codes */
 		private static void printCodes(MsgTree node, String code) {
 			if(node == null) return;
-			else if(node.isEndpoint()) System.out.printf("%c\t%s\n", node.item, code);
-			else {
+			else if(node.isEndpoint()) {
+				switch(node.item) {
+					case '\n': {
+						System.out.printf("[\\n]\t%s\n", code);
+						break;
+					}
+					case '\t': {
+						System.out.printf("[\\t]\t%s\n", code);
+						break;
+					}
+					case ' ': {
+						System.out.printf("[ ]\t%s\n", code);
+						break;
+					}
+					default: {
+						System.out.printf("%c\t%s\n", node.item, code);
+					}
+				}
+			} else {
 				MsgTree.printCodes(node.left, code + '0');
 				MsgTree.printCodes(node.right, code + '1');
 			}
@@ -351,7 +368,7 @@ public class Main {
 	private static String[] parseArch(File file) throws FileNotFoundException {
 		final String[] lines = new String[2];
 		String ext = "";
-		final Scanner s = new Scanner(file);
+		final Scanner s = new Scanner(file, "UTF-8").useDelimiter("\n");
 		try {
 			// always at least 2 lines
 			for(int l = 0; s.hasNextLine() && l < lines.length; l++) {
@@ -411,7 +428,10 @@ public class Main {
 
 		MsgTree root = new MsgTree();
 		runIO(root);
+		// TreeVisualizer TV = new TreeVisualizer(root);
+		// TV.Display();
 
 	}
+
 
 }
