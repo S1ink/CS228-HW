@@ -1,0 +1,7 @@
+*	BST?
+**	Hash table -- linear probing, chaining
+**	Heap
+***	Heap sort
+*	Generic graph
+**	BFS
+***	DFS + bonus features (cycles, topological sort)
